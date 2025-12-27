@@ -1,0 +1,117 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Pakiety ---
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- Ustawienia strony ---
+\geometry{margin=2.5cm}
+
+% --- Ustawienia listings ---
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  breaklines=true
+}
+
+\title{Instrukcja instalacji i konfiguracji maszyny wirtualnej\\
+System \textbf{Ubuntu} w \textbf{VirtualBox}}
+\author{Autor: \rule{6cm}{0.4pt}}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Wprowadzenie}
+Celem niniejszej instrukcji jest przedstawienie krok po kroku procesu instalacji oraz podstawowej konfiguracji maszyny wirtualnej z systemem \textbf{Ubuntu} przy użyciu oprogramowania \textbf{Oracle VM VirtualBox}.
+
+\section{Wymagania systemowe}
+\begin{itemize}
+  \item Komputer z systemem Windows / Linux / macOS
+  \item Minimum 8 GB wolnego miejsca na dysku
+  \item Minimum 4 GB pamięci RAM (zalecane 8 GB)
+  \item Dostęp do Internetu
+\end{itemize}
+
+\section{Pobieranie wymaganych plików}
+\subsection{VirtualBox}
+\begin{enumerate}
+  \item Wejdź na stronę: \url{https://www.virtualbox.org}
+  \item Pobierz najnowszą wersję VirtualBox dla swojego systemu operacyjnego
+  \item Zainstaluj program, postępując zgodnie z instrukcjami instalatora
+\end{enumerate}
+
+\subsection{Obraz ISO Ubuntu}
+\begin{enumerate}
+  \item Wejdź na stronę: \url{https://ubuntu.com/download}
+  \item Pobierz obraz ISO wybranej wersji Ubuntu (np. Ubuntu 22.04 LTS)
+\end{enumerate}
+
+\section{Tworzenie nowej maszyny wirtualnej}
+\begin{enumerate}
+  \item Uruchom VirtualBox
+  \item Kliknij \textbf{New / Nowa}
+  \item Nazwa maszyny: \textit{Ubuntu}
+  \item Typ: \textit{Linux}
+  \item Wersja: \textit{Ubuntu (64-bit)}
+\end{enumerate}
+
+\subsection{Konfiguracja pamięci RAM i CPU}
+\begin{itemize}
+  \item Pamięć RAM: minimum 2048 MB (zalecane 4096 MB)
+  \item Procesory: 2 lub więcej (jeśli dostępne)
+\end{itemize}
+
+\section{Konfiguracja dysku wirtualnego}
+\begin{enumerate}
+  \item Wybierz \textbf{Utwórz nowy dysk wirtualny}
+  \item Typ pliku: \textbf{VDI}
+  \item Alokacja: \textbf{Dynamicznie przydzielany}
+  \item Rozmiar: minimum 20 GB
+\end{enumerate}
+
+\section{Podłączanie obrazu ISO}
+\begin{enumerate}
+  \item Wejdź w \textbf{Ustawienia} maszyny wirtualnej
+  \item Zakładka \textbf{Nośniki}
+  \item Dodaj pobrany plik ISO Ubuntu jako napęd optyczny
+\end{enumerate}
+
+\section{Instalacja systemu Ubuntu}
+\begin{enumerate}
+  \item Uruchom maszynę wirtualną
+  \item Wybierz opcję \textbf{Install Ubuntu}
+  \item Wybierz język, układ klawiatury oraz połączenie sieciowe
+  \item Wybierz \textbf{Normal installation}
+  \item Typ instalacji: \textbf{Erase disk and install Ubuntu}
+  \item Utwórz konto użytkownika
+  \item Rozpocznij instalację i poczekaj na jej zakończenie
+\end{enumerate}
+
+\section{Konfiguracja po instalacji}
+\subsection{Instalacja dodatków gościa}
+\begin{enumerate}
+  \item W menu VirtualBox wybierz \textbf{Devices $\rightarrow$ Insert Guest Additions CD Image}
+  \item Uruchom instalator dodatków
+  \item Zrestartuj maszynę wirtualną
+\end{enumerate}
+
+\subsection{Ustawienia ekranu i schowka}
+\begin{itemize}
+  \item Ustaw tryb pełnoekranowy
+  \item Włącz współdzielony schowek (Clipboard: Bidirectional)
+\end{itemize}
+
+\section{Podsumowanie}
+Po wykonaniu powyższych kroków maszyna wirtualna z systemem Ubuntu jest gotowa do użytku. Można na niej instalować dodatkowe oprogramowanie oraz wykorzystywać ją do nauki i testów.
+
+\end{document}
