@@ -1,0 +1,43 @@
+# ===== LaTeX (pdflatex) =====
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+
+# ===== PDF output (opcjonalnie) =====
+# Odkomentuj, jeśli nie chcesz wersjonować plików PDF
+# *.pdf
+
+# ===== Temporary / backup files =====
+*.bak
+*.backup
+*.tmp
+*~
+*.swp
+*.swo
+
+# ===== OS / IDE =====
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===== Build directories =====
+build/
+out/
