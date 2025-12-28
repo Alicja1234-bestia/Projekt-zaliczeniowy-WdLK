@@ -1,24 +1,11 @@
 #!/usr/bin/env bash
 
-# Sprawdzenie liczby argumentów
-if [[ $# -ne 1 ]]; then
-    echo "Zła ilość argumentów, musisz podać jeden katalog"
-    exit 1
-fi
-
-path="$1"
-
-# Sprawdzenie czy argument jest katalogiem
-if [[ ! -d "$path" ]]; then
-    echo "W argumencie musisz podać nazwę katalogu"
-    exit 1
-fi
 
 # Tablica asocjacyjna: suma kontrolna -> lista plików
 declare -A checksum_dict
 
 # 1. ETAP: wyszukiwanie wszystkich plików i ich sum kontrolnych
-for file in "$path"/*; do
+for file in files/*; do
     [[ -f "$file" ]] || continue
 
     checksum=$(sha256sum "$file" | cut -d ' ' -f1)
