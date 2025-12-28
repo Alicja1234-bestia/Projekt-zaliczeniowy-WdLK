@@ -1,0 +1,5 @@
+CATEGORY: important
+FROM: quaerat@aliquam.com
+RCPT: me@mymail.com
+SUBJECT: Quisquam dolorem aliquam modi eius.
+BODY: Quisquam voluptatem magnam quaerat voluptatem numquam numquam magnam. Modi eius labore aliquam est amet dolorem labore. Dolorem modi quiquia quaerat etincidunt dolorem aliquam. Quisquam consectetur quaerat adipisci. Ipsum etincidunt ut non magnam numquam.

@@ -1,0 +1,5 @@
+CATEGORY: misc
+FROM: numquam@tempora.com
+RCPT: me@mymail.com
+SUBJECT: Adipisci dolorem aliquam voluptatem non quisquam magnam.
+BODY: Porro eius consectetur eius etincidunt. Est est etincidunt aliquam quaerat dolor non numquam. Dolore eius ipsum modi velit non. Ut adipisci neque est sed dolor. Voluptatem voluptatem est porro quaerat neque. Sed amet voluptatem voluptatem. Numquam dolorem non velit sed quaerat neque non. Quaerat tempora etincidunt consectetur voluptatem modi magnam.

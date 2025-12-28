@@ -1,0 +1,5 @@
+CATEGORY: regular
+FROM: voluptatem@modi.com
+RCPT: me@mymail.com
+SUBJECT: Magnam consectetur dolor etincidunt labore tempora neque numquam.
+BODY: Quisquam eius non quiquia. Dolore eius velit dolor voluptatem dolorem dolore. Voluptatem magnam modi quisquam. Ut quiquia adipisci est eius modi. Dolor velit numquam eius. Dolore amet modi sed magnam eius dolore ut.

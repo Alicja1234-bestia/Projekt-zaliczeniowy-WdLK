@@ -1,0 +1,5 @@
+CATEGORY: misc
+FROM: magnam@quaerat.com
+RCPT: me@mymail.com
+SUBJECT: Numquam amet tempora voluptatem.
+BODY: Velit est ipsum dolore modi est quisquam etincidunt. Consectetur ipsum non dolorem quiquia. Sit modi dolorem neque magnam dolore. Aliquam etincidunt voluptatem ut non magnam porro velit. Est voluptatem velit sit velit aliquam.

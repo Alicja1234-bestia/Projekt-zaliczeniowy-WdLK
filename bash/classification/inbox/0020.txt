@@ -1,0 +1,5 @@
+CATEGORY: urgent
+FROM: adipisci@dolore.com
+RCPT: me@mymail.com
+SUBJECT: Aliquam magnam voluptatem numquam.
+BODY: Ipsum numquam ut velit modi ipsum etincidunt quisquam. Sit tempora adipisci porro ut. Labore est porro quisquam. Adipisci ut modi sit. Sed sed modi dolorem. Dolore etincidunt est ipsum neque dolorem. Quiquia porro sed amet voluptatem sed ipsum labore. Sed sed dolor quiquia quiquia etincidunt dolor neque. Neque sit numquam adipisci labore quaerat. Velit consectetur voluptatem tempora.

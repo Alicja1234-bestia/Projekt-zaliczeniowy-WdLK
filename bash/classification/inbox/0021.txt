@@ -1,0 +1,5 @@
+CATEGORY: important
+FROM: numquam@neque.com
+RCPT: me@mymail.com
+SUBJECT: Ut est consectetur neque.
+BODY: Dolor dolorem dolorem voluptatem adipisci. Quisquam quisquam eius tempora ut quisquam eius labore. Tempora velit neque etincidunt non consectetur quaerat etincidunt. Porro dolorem ut est aliquam neque. Sed aliquam etincidunt etincidunt velit voluptatem non. Adipisci est modi modi est labore.

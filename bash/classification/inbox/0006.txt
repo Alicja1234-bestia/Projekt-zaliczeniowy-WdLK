@@ -1,0 +1,5 @@
+CATEGORY: important
+FROM: numquam@voluptatem.com
+RCPT: me@mymail.com
+SUBJECT: Porro ut adipisci non.
+BODY: Ipsum quisquam quaerat dolor tempora. Sed amet velit consectetur magnam. Consectetur numquam dolorem dolorem dolore quaerat non quiquia. Dolor aliquam dolor dolore est modi. Adipisci dolore etincidunt modi. Quisquam neque ipsum labore. Quiquia ut ut etincidunt magnam tempora porro sit.

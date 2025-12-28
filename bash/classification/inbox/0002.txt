@@ -1,0 +1,5 @@
+CATEGORY: regular
+FROM: ut@non.com
+RCPT: me@mymail.com
+SUBJECT: Quisquam est ut sed.
+BODY: Tempora dolor etincidunt est porro aliquam sed ipsum. Quaerat labore neque sit labore amet. Quiquia ipsum quisquam neque quaerat non dolore quisquam. Non quiquia sit quiquia neque sed. Quaerat etincidunt voluptatem ipsum quaerat etincidunt dolorem dolorem.
