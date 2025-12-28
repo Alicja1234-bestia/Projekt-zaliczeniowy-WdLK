@@ -1,0 +1,5 @@
+CATEGORY: important
+FROM: ipsum@sit.com
+RCPT: me@mymail.com
+SUBJECT: Magnam modi neque amet est sed dolor neque.
+BODY: Amet eius eius ut tempora sit labore non. Dolore numquam consectetur neque. Etincidunt ut quiquia quaerat. Neque porro quaerat quiquia. Quaerat ipsum quaerat aliquam. Aliquam tempora sit neque voluptatem neque eius dolorem. Ut dolorem consectetur ut non magnam numquam. Consectetur tempora ut sed. Modi eius neque sed eius adipisci adipisci sit.

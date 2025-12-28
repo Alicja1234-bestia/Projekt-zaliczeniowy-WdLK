@@ -1,0 +1,5 @@
+CATEGORY: important
+FROM: amet@numquam.com
+RCPT: me@mymail.com
+SUBJECT: Tempora sit dolor sed ut consectetur dolore neque.
+BODY: Magnam amet numquam dolore quiquia dolore velit. Eius amet numquam labore. Modi etincidunt non numquam tempora. Amet sit adipisci quisquam amet est. Neque magnam consectetur dolorem non est ut. Quiquia eius adipisci adipisci ipsum tempora. Eius tempora porro eius. Dolor neque eius voluptatem. Porro magnam non amet. Eius neque quisquam est dolor consectetur dolore.

@@ -1,0 +1,5 @@
+CATEGORY: regular
+FROM: numquam@numquam.com
+RCPT: me@mymail.com
+SUBJECT: Ipsum amet labore magnam numquam.
+BODY: Numquam tempora adipisci velit ipsum quaerat labore. Magnam amet ut non ipsum tempora velit adipisci. Labore magnam est ut. Sit labore quiquia magnam est. Non etincidunt ipsum aliquam quaerat est quaerat. Consectetur dolor magnam non etincidunt quisquam quaerat. Numquam eius quaerat eius quaerat dolorem sed. Dolore sit porro etincidunt quisquam amet. Consectetur voluptatem dolore dolorem consectetur neque modi. Amet ut dolore etincidunt modi velit quaerat.

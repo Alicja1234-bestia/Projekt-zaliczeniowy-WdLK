@@ -1,0 +1,5 @@
+CATEGORY: regular
+FROM: adipisci@quaerat.com
+RCPT: me@mymail.com
+SUBJECT: Voluptatem quiquia ut porro sit.
+BODY: Amet est dolor dolor. Ut quisquam etincidunt sed sed. Velit etincidunt porro numquam velit labore. Non aliquam etincidunt ipsum quaerat quaerat dolore. Velit labore ut modi labore ipsum. Numquam numquam amet magnam ipsum eius ipsum porro.

@@ -1,0 +1,5 @@
+CATEGORY: urgent
+FROM: velit@labore.com
+RCPT: me@mymail.com
+SUBJECT: Velit aliquam est eius quiquia neque.
+BODY: Tempora tempora sit modi ipsum tempora. Magnam ut dolorem ipsum neque modi modi. Numquam sit consectetur sit neque quaerat sed. Adipisci etincidunt sit voluptatem neque quiquia neque etincidunt. Voluptatem dolor ut numquam magnam. Quisquam eius modi quiquia quiquia magnam magnam dolor.

@@ -1,0 +1,5 @@
+CATEGORY: regular
+FROM: magnam@porro.com
+RCPT: me@mymail.com
+SUBJECT: Adipisci eius dolorem sit.
+BODY: Numquam velit sed est est adipisci ut amet. Sit etincidunt est tempora. Voluptatem ipsum voluptatem dolorem non. Ipsum quaerat ut adipisci velit non numquam dolor. Magnam tempora sed non quisquam magnam dolorem amet. Eius labore ut sit labore. Ut eius velit voluptatem adipisci.

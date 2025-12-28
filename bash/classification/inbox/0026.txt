@@ -1,0 +1,4 @@
+FROM: dolor@velit.com
+RCPT: me@mymail.com
+SUBJECT: Dolor ipsum sed modi labore.
+BODY: Porro dolore consectetur etincidunt. Numquam porro velit sit dolore consectetur. Magnam modi modi magnam tempora dolorem. Sed non sed consectetur consectetur. Dolore porro labore voluptatem quaerat sit. Eius porro numquam amet tempora quisquam sed quaerat. Magnam sed quiquia quiquia quisquam quiquia quiquia dolorem. Numquam est labore consectetur est dolore dolorem modi. Dolor labore ipsum modi magnam.

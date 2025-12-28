@@ -1,0 +1,4 @@
+FROM: aliquam@modi.com
+RCPT: me@mymail.com
+SUBJECT: Labore ipsum labore tempora.
+BODY: Consectetur velit consectetur etincidunt. Quisquam ipsum consectetur quaerat sit amet sed ipsum. Sit tempora modi sit non. Sed consectetur aliquam consectetur. Aliquam amet quiquia numquam consectetur ut sit. Etincidunt ipsum est amet velit. Est numquam etincidunt numquam modi dolore adipisci dolorem. Non dolorem est dolorem porro labore. Dolore voluptatem neque est voluptatem modi neque dolor.

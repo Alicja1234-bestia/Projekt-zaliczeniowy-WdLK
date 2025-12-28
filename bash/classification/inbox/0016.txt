@@ -1,0 +1,4 @@
+FROM: dolore@quiquia.com
+RCPT: me@mymail.com
+SUBJECT: Etincidunt quaerat adipisci quaerat voluptatem quaerat.
+BODY: Etincidunt quiquia quisquam consectetur tempora sit. Dolorem numquam quiquia adipisci etincidunt ut. Voluptatem numquam adipisci labore non quaerat. Neque sed porro eius amet ut. Labore magnam labore non non dolor. Modi sit voluptatem eius aliquam dolore. Ipsum aliquam amet modi ipsum porro magnam est.
