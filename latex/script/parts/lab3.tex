@@ -1,0 +1,401 @@
+\documentclass[a4paper, 12pt]{article}
+
+% --- PAKIETY ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{beramono}
+
+% --- NOWE PAKIETY DO OKIENEK TERMINALA ---
+\usepackage{minted} % Do kolorowania składni (wymaga -shell-escape)
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,breakable} % Załadowanie bibliotek tcolorbox
+
+% --- USTAWIENIA STRONY ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\definecolor{titlebg}{HTML}{4A90E2}
+
+% --- USTAWIENIA HYPERLINKÓW ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titlebg,
+    urlcolor=titlebg,
+    citecolor=titlebg,
+}
+
+% --- NAGŁÓWEK I STOPKA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Wprowadzenie do pracy w systemie Linux}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- STYLE DLA RAMEK TCOLORBOX ---
+\newtcolorbox{definitionbox}[1]{
+    colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
+    colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
+    bottomrule=0.5pt, toprule=0.5pt, breakable
+}
+
+\newtcolorbox{importantbox}[1]{
+    colback=yellow!10, colframe=orange!80!black, fonttitle=\bfseries,
+    title=#1, boxrule=1pt, arc=2mm, breakable
+}
+
+% --- POPRAWIONE ŚRODOWISKO "TERMINAL" ---
+\newtcblisting{terminal}{
+    listing only, 
+    listing engine=minted,
+    minted language=bash,
+    minted style=vs, % Popularny ciemny motyw
+    minted options={
+        autogobble, 
+        breaklines, 
+        fontsize=\footnotesize
+    },
+    colback=black!70, % Ciemne tło terminala
+    colframe=black!50,
+    breakable,
+    arc=3mm,
+    boxrule=1pt,
+    left=5mm, top=3mm, bottom=3mm,
+    title={\hspace{-3mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=red!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=yellow!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=green!70!black, arc=3mm]{}
+        \hspace{4mm} \bfseries\small Terminal -- Bash
+    },
+}
+
+
+% --- STRONA TYTUŁOWA ---
+\title{\bfseries Wprowadzenie do pracy w środowisku Linux \\ \large Notatki z zajęć laboratoryjnych}
+\author{CZĘŚĆ 1}
+\date{}
+
+% --- POCZĄTEK DOKUMENTU ---
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section*{Wprowadzenie}
+\addcontentsline{toc}{section}{Wprowadzenie}
+Niniejszy dokument stanowi wprowadzenie do podstaw systemu operacyjnego Linux oraz pracy w jego interfejsie wiersza poleceń. Interfejs ten, zwany powłoką, w większości systemów Linux jest realizowany przez program \href{https://www.gnu.org/software/bash/}{\textbf{Bash}}. Celem jest przedstawienie fundamentalnych koncepcji teoretycznych, które odróżniają Linuksa od innych systemów, a następnie zapoznanie z podstawowymi poleceniami niezbędnymi do wydajnej pracy w środowisku tekstowym.
+
+\section{Podstawy teoretyczne: System operacyjny}
+% Ta sekcja pozostaje bez zmian.
+\subsection{Czym jest system operacyjny?}
+\begin{definitionbox}{System Operacyjny (OS)}
+Jest to nadrzędne oprogramowanie, które zarządza wszystkimi zasobami komputera. Działa jako pośrednik między użytkownikiem a sprzętem (procesorem, pamięcią, dyskami). Umożliwia uruchamianie programów i wykonywanie zadań bez konieczności znajomości technicznych detali działania podzespołów. Najpopularniejsze systemy to Windows, Linux, macOS i Android.
+\end{definitionbox}
+
+\subsection{Serce systemu, czyli jądro (kernel)}
+\begin{definitionbox}{Jądro systemu (ang. kernel)}
+To centralna i najważniejsza część systemu operacyjnego. Odpowiada za fundamentalne zadania: zarządzanie procesami (uruchomionymi programami), alokację pamięci RAM oraz komunikację ze wszystkimi urządzeniami podłączonymi do komputera. Można je postrzegać jako "mózg" operacji systemowych.
+\end{definitionbox}
+
+\subsection{Dwa światy: Linux vs. Windows}
+Chociaż oba systemy służą do zarządzania komputerem, ich filozofia i budowa znacząco się różnią.
+
+\subsubsection{Porównanie jąder systemowych}
+\begin{itemize}
+    \item \textbf{Linux} wykorzystuje jądro \textbf{monolityczne}. Oznacza to, że większość kluczowych funkcji jest zintegrowana w jednym, dużym programie. Jądro Linuksa jest otwarte (\textit{open-source}), co oznacza, że każdy może przeglądać i modyfikować jego kod. Jest też modularne -- sterowniki można dodawać i usuwać w trakcie pracy systemu.
+    \item \textbf{Windows} wykorzystuje jądro \textbf{hybrydowe} (o nazwie \textit{NT Kernel}). Łączy ono cechy jądra monolitycznego (dla wydajności) z mikrojądrem (dla stabilności). Kod jądra Windows jest zamknięty i stanowi własność firmy Microsoft.
+\end{itemize}
+
+\subsubsection{Zalety i wady obu systemów}
+\begin{tcbitemize}[raster columns=2, raster equal height, colback=black!5, colframe=titlebg, fonttitle=\bfseries]
+    \tcbitem[title=Windows]
+        \textbf{Zalety:}
+        \begin{itemize}
+            \item Prostota obsługi i intuicyjność.
+            \item Ogromna kompatybilność z oprogramowaniem i grami.
+        \end{itemize}
+        \textbf{Wady:}
+        \begin{itemize}
+            \item System jest płatny (licencja).
+            \item Postrzegany jako bardziej podatny na wirusy.
+        \end{itemize}
+    \tcbitem[title=Linux]
+        \textbf{Zalety:}
+        \begin{itemize}
+            \item Jest darmowy i otwartoźródłowy.
+            \item Wysoka stabilność i bezpieczeństwo.
+        \end{itemize}
+        \textbf{Wady:}
+        \begin{itemize}
+            \item Wyższy próg wejścia dla początkujących.
+            \item Mniejsza liczba komercyjnych programów i gier.
+        \end{itemize}
+\end{tcbitemize}
+
+
+\subsubsection{Przykłady wykorzystania}
+\textbf{Windows} jest idealnym wyborem dla użytkowników domowych i biurowych, którzy potrzebują systemu działającego "od razu" do przeglądania internetu, pracy z dokumentami czy rozrywki.
+
+\textbf{Linux} jest narzędziem dla osób, które potrzebują pełnej kontroli nad środowiskiem pracy -- programistów, administratorów serwerów czy naukowców. Umożliwia precyzyjną konfigurację każdego elementu systemu.
+
+\subsection{Świat Linuksa: Dystrybucje}
+Linux nie jest jednym, konkretnym systemem, lecz jądrem, na bazie którego tworzone są tzw. \textbf{dystrybucje}. Są to kompletne systemy operacyjne z jądrem Linux oraz zestawem programów.
+\begin{itemize}
+    \item \href{https://www.debian.org/}{\textbf{Debian}}: Znany ze swojej stabilności, często używany na serwerach.
+    \item \href{https://ubuntu.com/}{\textbf{Ubuntu}}: Bardzo popularny, uważany za przyjazny dla początkujących.
+    \item \href{https://linuxmint.com/}{\textbf{Linux Mint}}: Ceniony za elegancki interfejs, ułatwiający przejście z Windowsa.
+    \item \textbf{Hannah Montana Linux}: Przykład, że na bazie Linuksa można stworzyć niemal wszystko.
+\end{itemize}
+
+\section{Podstawowe komendy w systemie Linux}
+
+\subsection{Powłoka systemowa: Bash}
+Zanim przejdziemy do poleceń, warto zrozumieć, gdzie je wpisujemy. Terminal to program, który emuluje tekstowy interfejs, a wewnątrz niego działa \textbf{powłoka systemowa} (ang. \textit{shell}).
+\begin{definitionbox}{Powłoka systemowa (shell)}
+To program-interpreter, który tłumaczy polecenia wpisywane przez użytkownika na język zrozumiały dla jądra systemu operacyjnego. Jest to podstawowe narzędzie do interakcji z systemem w trybie tekstowym. Najpopularniejszą powłoką w świecie Linuksa jest \textbf{Bash} (Bourne-Again SHell).
+\end{definitionbox}
+Bash oferuje wiele ułatwień, takich jak historia wpisywanych poleceń (dostępna strzałkami w górę/dół), autouzupełnianie (klawisz \texttt{Tab}) oraz możliwość tworzenia skryptów automatyzujących zadania.
+
+\subsection{Struktura poleceń: opcje i argumenty}
+Praca w terminalu polega na wpisywaniu poleceń według określonego schematu:
+\begin{center}
+\texttt{polecenie [opcje] [argumenty]}
+\end{center}
+\begin{itemize}
+    \item \textbf{Polecenie} to nazwa programu, który chcemy uruchomić (np. `ls`, `cp`).
+    \item \textbf{Opcje} (nazywane też flagami lub przełącznikami) to modyfikatory, które zmieniają domyślne zachowanie polecenia. Zwykle poprzedzone są myślnikiem.
+    \item \textbf{Argumenty} to obiekty, na których polecenie ma operować (np. nazwy plików, ścieżki do katalogów).
+\end{itemize}
+
+Opcje występują w dwóch formach:
+\begin{itemize}
+    \item \textbf{Krótka forma}: jeden myślnik i jedna litera, np. \texttt{-l}. Krótkie opcje można łączyć. Zamiast pisać \texttt{ls -l -h -a}, można to skrócić do \texttt{ls -lha}.
+    \item \textbf{Długa forma}: dwa myślniki i pełna nazwa, np. \texttt{--list}. Są bardziej czytelne, ale nie można ich łączyć. Pełny odpowiednik \texttt{ls -lha} to \texttt{ls --list --human-readable --all}.
+\end{itemize}
+
+\begin{importantbox}{Instrukcja obsługi: polecenie \texttt{man}}
+Jeśli nie wiesz, jak działa polecenie lub jakich opcji można użyć, skorzystaj z wbudowanej instrukcji (manuala). Wpisz \texttt{man <nazwa\_polecenia>}, np. \texttt{man ls}, aby wyświetlić jego pełną dokumentację. Z manuala wychodzi się, wciskając klawisz \texttt{q}.
+\end{importantbox}
+
+\subsection{Polecenia informacyjne}
+Poniżej znajdują się podstawowe polecenia służące do uzyskiwania informacji o systemie i użytkowniku.
+
+\subsubsection*{Polecenie \texttt{echo}}
+Wyświetla tekst (argument) na standardowym wyjściu (ekranie).
+\begin{terminal}
+# Wyświetla podany tekst na ekranie
+$ echo 'Hello World'
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{whoami}}
+Wyświetla nazwę aktualnie zalogowanego użytkownika.
+\begin{terminal}
+# Wyświetla nazwę zalogowanego użytkownika
+$ whoami
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{groups}}
+Pokazuje nazwy grup, do których należy bieżący użytkownik.
+\begin{terminal}
+# Pokazuje grupy, do których należy użytkownik
+$ groups
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{date}}
+Wyświetla aktualną datę i godzinę. Jego format można kontrolować.
+\begin{terminal}
+# Wyświetla bieżącą datę i godzinę
+$ date
+
+# Wyświetla datę w formacie ROK-MIESIĄC-DZIEŃ
+$ date +"%Y-%m-%d"
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{uname}}
+Wyświetla informacje o systemie operacyjnym i jego jądrze.
+\begin{terminal}
+# Wyświetla informacje o jądrze systemu (-a to --all)
+$ uname -a
+\end{terminal}
+
+
+\subsection{Nawigacja i listowanie plików}
+Te polecenia są kluczowe do poruszania się po systemie plików.
+
+\subsubsection*{Polecenie \texttt{pwd}}
+Drukuje pełną ścieżkę do bieżącego katalogu roboczego (print working directory).
+\begin{terminal}
+# Sprawdź, gdzie jesteś
+$ pwd
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{cd}}
+Zmienia bieżący katalog (change directory).
+\begin{terminal}
+# Zmień katalog na podany
+$ cd /sciezka/do/katalogu
+
+# Przejdź do katalogu domowego użytkownika
+$ cd ~
+
+# Wróć do poprzedniego katalogu
+$ cd -
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{ls}}
+Wyświetla listę plików i katalogów w bieżącej lokalizacji.
+\begin{terminal}
+# Wyświetl zawartość katalogu (list)
+$ ls
+
+# Opcje dla `ls`:
+# -l: format listy (szczegółowy)
+# -h: rozmiary w czytelnej formie (human-readable)
+# -a: pokaż wszystkie pliki, także ukryte (zaczynające się od .)
+# -t: sortuj według czasu modyfikacji (najnowsze pierwsze)
+$ ls -lhat
+\end{terminal}
+
+
+\subsection{Zarządzanie plikami i katalogami}
+
+\subsubsection*{Polecenie \texttt{touch}}
+Tworzy nowy, pusty plik lub aktualizuje datę modyfikacji istniejącego pliku.
+\begin{terminal}
+# Utwórz pusty plik
+$ touch nowy_plik.txt
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{mkdir}}
+Tworzy nowy katalog (make directory).
+\begin{terminal}
+# Utwórz nowy katalog
+$ mkdir nowy_katalog
+
+# Utwórz całą ścieżkę katalogów (parents)
+$ mkdir -p A/B/C
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{cp}}
+Kopiuje pliki lub katalogi.
+\begin{terminal}
+# Kopiuj plik (cp <źródło> <cel>)
+# -v: tryb gadatliwy (verbose), pokazuje co robi
+# -i: tryb interaktywny, pyta przed nadpisaniem
+$ cp -iv plik.txt /tmp/kopia_pliku.txt
+
+# Kopiuj cały katalog (opcja -r, recursive)
+$ cp -r moj_folder/ /tmp/
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{mv}}
+Przenosi lub zmienia nazwę plików i katalogów (move).
+\begin{terminal}
+# Zmień nazwę pliku (mv <stara> <nowa>)
+$ mv plik.txt dokument.txt
+
+# Przenieś plik do innego katalogu z trybem gadatliwym
+$ mv -v dokument.txt /tmp/
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{rm}}
+Usuwa pliki lub katalogi (remove).
+\begin{terminal}
+# Usuń plik
+$ rm plik.txt
+
+# Usuń katalog i całą jego zawartość
+# -r: rekurencyjnie (dla katalogów)
+# -f: wymuszenie (force), nie pyta o potwierdzenie
+$ rm -rf stary_katalog/
+\end{terminal}
+
+\begin{importantbox}{UWAGA!}
+Polecenie \texttt{rm -rf} jest ekstremalnie niebezpieczne. Usuwa wszystko bezpowrotnie i bez pytania o potwierdzenie. Używaj go z najwyższą ostrożnością, zawsze upewniając się, w którym katalogu się znajdujesz (\texttt{pwd}).
+\end{importantbox}
+
+
+\subsection{Przeglądanie i przetwarzanie plików}
+
+\subsubsection*{Polecenie \texttt{cat}}
+Wyświetla zawartość pliku na standardowym wyjściu.
+\begin{terminal}
+# Wyświetl całą zawartość pliku z numerami linii (-n)
+$ cat -n skrypt.sh
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{head}}
+Wyświetla pierwsze linie pliku (domyślnie 10).
+\begin{terminal}
+# Wyświetl pierwsze 5 linii pliku
+$ head -n 5 /var/log/syslog
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{tail}}
+Wyświetla ostatnie linie pliku (domyślnie 10).
+\begin{terminal}
+# Wyświetl ostatnie 3 linie pliku
+$ tail -n 3 /var/log/syslog
+
+# Śledź plik na żywo (idealne do logów, -f to follow)
+$ tail -f /var/log/syslog
+\end{terminal}
+
+\subsubsection*{Polecenie \texttt{wget}}
+Pobiera pliki z internetu.
+\begin{terminal}
+# Pobierz plik i zapisz pod inną nazwą (-O)
+$ wget -O pan_tadeusz.txt "https://wolnelektury.pl/media/book/txt/pan-tadeusz.txt"
+\end{terminal}
+
+\subsubsection*{Przekierowanie wyjścia \texttt{>}}
+Zapisuje wynik (standardowe wyjście) polecenia do pliku, nadpisując jego zawartość, jeśli plik istnieje.
+\begin{terminal}
+# Zapisz wynik polecenia `ls -l` do pliku
+$ ls -l > lista_plikow.txt
+\end{terminal}
+
+\subsubsection{Wyszukiwanie tekstu: polecenie \texttt{grep}}
+Służy do wyszukiwania w tekście linii pasujących do zadanego wzorca.
+\begin{terminal}
+# Znajdź linie zawierające "error" w pliku log.txt
+$ grep "error" log.txt
+
+# Ignoruj wielkość liter (-i)
+$ grep -i "Error" log.txt
+
+# Pokaż numery linii (-n)
+$ grep -n "error" log.txt
+
+# Policz, ile jest pasujących linii (-c)
+$ grep -c "error" log.txt
+
+# Pokaż linie, które NIE zawierają wzorca (-v, invert match)
+$ grep -v "info" log.txt
+
+# Szukaj rekurencyjnie we wszystkich plikach w katalogu (-r)
+$ grep -r "TODO" /sciezka/do/projektu/
+\end{terminal}
+
+\subsubsection{Wyszukiwanie plików – Polecenie \texttt{find}}
+W pracy z dużymi projektami lub na serwerach często musimy znaleźć pliki o określonej nazwie, typie czy rozmiarze. Polecenie \texttt{find} jest do tego idealnym narzędziem.
+\begin{terminal}
+# Znajdź wszystkie pliki z rozszerzeniem .txt w bieżącym katalogu i podkatalogach
+$ find . -name "*.txt"
+
+# Znajdź wszystkie katalogi (-type d) o nazwie "Documents" w całym systemie (/)
+$ find / -type d -name "Documents"
+
+# Znajdź pliki większe niż 100MB w katalogu domowym (~)
+$ find ~ -size +100M
+\end{terminal}
+
+\end{document}

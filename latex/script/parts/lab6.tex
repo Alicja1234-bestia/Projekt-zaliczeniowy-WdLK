@@ -1,0 +1,285 @@
+\documentclass[a4paper, 12pt]{article}
+
+% --- PAKIETY ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{beramono}
+\usepackage{tabularx} % Do lepszych tabel
+
+% --- PAKIETY DO OKIENEK TERMINALA I KODU ---
+\usepackage{minted} % Do kolorowania składni (wymaga -shell-escape)
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,breakable} % Załadowanie bibliotek tcolorbox
+
+% --- USTAWIENIA STRONY ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\definecolor{titlebg}{HTML}{4A90E2}
+\definecolor{terminalbg}{HTML}{2D2D2D} % Ciemnoszary dla tła terminala
+
+% --- USTAWIENIA HYPERLINKÓW ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titlebg,
+    urlcolor=titlebg,
+    citecolor=titlebg,
+}
+
+% --- NAGŁÓWEK I STOPKA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Wprowadzenie do pracy w systemie Linux}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- STYLE DLA RAMEK TCOLORBOX ---
+\newtcolorbox{definitionbox}[1]{
+    colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
+    colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
+    bottomrule=0.5pt, toprule=0.5pt, breakable
+}
+
+\newtcolorbox{importantbox}[1]{
+    colback=yellow!10, colframe=orange!80!black, fonttitle=\bfseries,
+    title=#1, boxrule=1pt, arc=2mm, breakable
+}
+
+% --- ŚRODOWISKO "TERMINAL" ---
+\newtcblisting{terminal}{
+    listing only, 
+    listing engine=minted,
+    minted language=bash,
+    minted style=vs, % Popularny ciemny motyw
+    minted options={
+        autogobble, 
+        breaklines, 
+        fontsize=\footnotesize
+    },
+    colback=black!70, % Ciemne tło terminala
+    colframe=black!50,
+    breakable,
+    arc=3mm,
+    boxrule=1pt,
+    left=5mm, top=3mm, bottom=3mm,
+    title={\hspace{-3mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=red!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=yellow!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=green!70!black, arc=3mm]{}
+        \hspace{4mm} \bfseries\small Terminal -- Bash
+    },
+}
+
+
+% --- STRONA TYTUŁOWA ---
+\title{\bfseries Wprowadzenie do pracy w środowisku Linux \\ \large Część 4: Wprowadzenie do Systemu Kontroli Wersji Git}
+\author{Opracowanie dla studentów matematyki}
+\date{9 grudnia 2025}
+
+% --- POCZĄTEK DOKUMENTU ---
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Wprowadzenie do Kontroli Wersji}
+\subsection{Problem: Chaos w plikach}
+Prawdopodobnie każdy spotkał się z problemem utrzymywania wielu wersji tego samego pliku: \texttt{praca\_v1.doc}, \texttt{praca\_v2\_poprawiona.doc}, \texttt{praca\_FINALNA.doc}. Taki sposób pracy jest chaotyczny i prowadzi do błędów.
+
+\subsection{Rozwiązanie: System Kontroli Wersji (VCS)}
+\begin{definitionbox}{System Kontroli Wersji (VCS)}
+To oprogramowanie, które śledzi i zarządza zmianami w plikach w czasie. Rejestruje każdą modyfikację w specjalnej bazie danych, co pozwala na przeglądanie historii, cofanie się do poprzednich wersji, eksperymentowanie bez ryzyka i, co najważniejsze, efektywną współpracę wielu osób.
+\end{definitionbox}
+
+\subsection{Git: Król Systemów Kontroli Wersji}
+\begin{definitionbox}{Git}
+\textbf{Git} to najpopularniejszy na świecie, darmowy i otwarty \textbf{rozproszony} system kontroli wersji. Słowo "rozproszony" oznacza, że każdy członek zespołu ma na swoim komputerze \textbf{pełną kopię całej historii projektu}.
+\end{definitionbox}
+
+\subsection{Dlaczego Git to standard w branży?}
+Nauka Gita to nie tylko kwestia techniczna -- to inwestycja w swoją przyszłość zawodową.
+\begin{importantbox}{Git jako fundament nowoczesnej pracy zespołowej}
+W każdej firmie technologicznej praca nad kodem odbywa się w zespole. Git jest językiem, za pomocą którego ten zespół komunikuje się w sprawach technicznych. Jego znajomość pozwala na:
+\begin{itemize}
+    \item \textbf{Bezpieczną współpracę:} Git pozwala dziesiątkom osób pracować nad tym samym projektem jednocześnie, bez ryzyka nadpisania czyjejś pracy.
+    \item \textbf{Zarządzanie złożonością:} Nowoczesne oprogramowanie to miliony linii kodu. Git pozwala na organizację tej złożoności poprzez gałęzie.
+    \item \textbf{Utrzymanie porządku i odpowiedzialności:} Każda zmiana w Gicie jest "podpisana" przez autora i opatrzona opisem, co tworzy przejrzystą historię projektu.
+\end{itemize}
+\end{importantbox}
+
+
+\section{Praca z Gitem: Podstawowe Koncepty i Komendy}
+\subsection{Repozytorium: Twój projekt z superpamięcią}
+\begin{definitionbox}{Repozytorium (Repository, "repo")}
+To folder z Twoim projektem, który jest śledzony przez Gita. Zawiera on wszystkie pliki projektu oraz ukryty podkatalog o nazwie \texttt{.git}, w którym Git przechowuje całą historię zmian.
+\end{definitionbox}
+\begin{terminal}
+# Wejdź do katalogu ze swoim projektem
+$ cd moj-projekt
+# Zainicjuj puste repozytorium Gita
+$ git init
+\end{terminal}
+
+\subsection{Zapisywanie historii: cykl \texttt{add} i \texttt{commit}}
+Praca w Gicie to powtarzalny cykl: \textbf{1. Modyfikuj pliki} $\rightarrow$ \textbf{2. Dodaj do poczekalni} (\texttt{git add}) $\rightarrow$ \textbf{3. Zatwierdź} (\texttt{git commit}).
+\begin{itemize}
+    \item \texttt{git status} -- \textbf{Twoja najważniejsza komenda!} Pokazuje, które pliki zostały zmienione, które są w poczekalni, a które nie są śledzone.
+    \item \texttt{git add <plik>} -- dodaje zmiany z konkretnego pliku do "poczekalni" (Staging Area).
+    \item \texttt{git commit -m "Opis zmian"} -- tworzy nowy "punkt zapisu" (commit) z plików w poczekalni.
+    \item \texttt{git log} -- wyświetla historię wszystkich commitów.
+\end{itemize}
+\begin{terminal}
+# Zobaczmy status repozytorium
+$ git status
+# Stwórzmy nowy plik
+$ echo "Pierwsza linia" > plik.txt
+# Dodajmy plik do poczekalni, aby Git zaczął go śledzić
+$ git add plik.txt
+# Zatwierdźmy zmiany, tworząc pierwszy commit
+$ git commit -m "Dodano plik.txt z pierwszą linią"
+# Zobaczmy historię
+$ git log
+\end{terminal}
+
+\subsection{Ignorowanie Plików: plik \texttt{.gitignore}}
+Plik \texttt{.gitignore} to prosta lista wzorców, które Git ma ignorować. Jest kluczowy, aby do repozytorium nie trafiały pliki tymczasowe, dane wrażliwe (hasła!) czy pliki systemowe.
+\begin{importantbox}{Dobra praktyka: Stwórz \texttt{.gitignore} na samym początku!}
+Nie musisz pisać tego pliku od zera. Serwisy takie jak \href{https://www.toptal.com/developers/gitignore}{\texttt{gitignore.io}} pozwalają wygenerować gotowe szablony.
+\end{importantbox}
+
+\subsection{Gałęzie (Branches): Bezpieczne eksperymenty}
+\begin{definitionbox}{Gałąź (Branch)}
+To \textbf{ruchoma etykieta} wskazująca na konkretny commit. Gałęzie pozwalają na tworzenie niezależnych, równoległych linii rozwoju. Zawsze twórz nową gałąź dla nowego zadania!
+\end{definitionbox}
+\begin{itemize}
+    \item \texttt{git branch <nazwa>} -- tworzy nową gałąź.
+    \item \texttt{git switch <nazwa>} -- przełącza się na istniejącą gałąź.
+    \item \texttt{git switch -c <nazwa>} -- tworzy nową gałąź i od razu się na nią przełącza.
+    \item \texttt{git merge <nazwa>} -- łączy zmiany z gałęzi \texttt{<nazwa>} do tej, na której aktualnie jesteś.
+\end{itemize}
+\begin{terminal}
+# Stwórz nową gałąź i przełącz się na nią
+$ git switch -c nowa-funkcja
+# ... pracuj na plikach, rób commity ...
+# Wróć na gałąź główną
+$ git switch main
+# Połącz zmiany z `nowa-funkcja` do `main`
+$ git merge nowa-funkcja
+\end{terminal}
+
+\section{Ekosystem Git: GitHub i Dobre Praktyki}
+\subsection{Git vs. GitHub: Narzędzie kontra Platforma}
+\begin{itemize}
+    \item \textbf{Git} to narzędzie działające w wierszu poleceń na Twoim komputerze. To "silnik".
+    \item \textbf{GitHub} to platforma internetowa, która służy do \textbf{hostowania} repozytoriów Gita. To "chmura" dla Twojego kodu.
+\end{itemize}
+
+\subsection{Praca ze Zdalnym Repozytorium (GitHub)}
+Twoje lokalne repozytorium może być połączone ze zdalną kopią, np. na GitHubie. Ta zdalna kopia, nazywana domyślnie \texttt{origin}, jest centralnym punktem dla współpracy.
+
+\begin{definitionbox}{Wysyłanie zmian na serwer: \texttt{git push}}
+Polecenie \texttt{git push} wysyła Twoje lokalne commity (z konkretnej gałęzi) do zdalnego repozytorium. To jak synchronizacja zapisów z chmurą.
+\begin{terminal}
+# Wyślij zmiany z lokalnej gałęzi `main` do zdalnej `origin`
+$ git push origin main
+\end{terminal}
+Przy pierwszym wysłaniu nowej gałęzi, użyj \texttt{git push -u origin nazwa-galezi}. Opcja \texttt{-u} tworzy "powiązanie śledzące", dzięki czemu w przyszłości wystarczy wpisać samo \texttt{git push}.
+\end{definitionbox}
+
+\begin{definitionbox}{Pobieranie zmian z serwera: \texttt{git pull}}
+Polecenie \texttt{git pull} robi odwrotną rzecz: pobiera najnowsze zmiany ze zdalnego repozytorium i łączy je z Twoją lokalną wersją. To kluczowa komenda w pracy zespołowej -- \textbf{zawsze wykonuj ją przed rozpoczęciem pracy}, aby mieć pewność, że pracujesz na aktualnym kodzie.
+\begin{terminal}
+# Pobierz i połącz najnowsze zmiany z gałęzi `main` na serwerze
+$ git pull origin main
+\end{terminal}
+\end{definitionbox}
+
+\begin{importantbox}{Nie panikuj! Wstęp do rozwiązywania konfliktów}
+Czasami, podczas \texttt{git pull} lub \texttt{git merge}, Git napotka \textbf{konflikt}. Dzieje się tak, gdy Ty i inna osoba zmodyfikowaliście \textbf{te same linie w tym samym pliku}. Git nie wie, która wersja jest poprawna, więc zatrzymuje proces i prosi Ciebie o podjęcie decyzji.
+
+W pliku objętym konfliktem zobaczysz specjalne znaczniki:
+\begin{minted}{text}
+<<<<<<< HEAD
+Twoja zmiana (to, co miałeś lokalnie)
+=======
+Zmiana, która nadeszła z serwera
+>>>>>>> nazwa_commita_lub_galezi
+\end{minted}
+\textbf{Twoim zadaniem jest:}
+\begin{enumerate}
+    \item Otworzyć plik w edytorze.
+    \item Zdecydować, która wersja kodu ma zostać. Możesz wybrać swoją, cudzą, albo połączyć obie.
+    \item \textbf{Usunąć wszystkie znaczniki} dodane przez Gita (\texttt{<<<}, \texttt{===}, \texttt{>>>}).
+    \item Zapisać plik.
+    \item Dodać rozwiązany plik do poczekalni (\texttt{git add <plik>}) i zakończyć scalanie, tworząc nowy commit (\texttt{git commit}).
+\end{enumerate}
+Konflikty są normalną częścią pracy w zespole. Najważniejsze to zrozumieć, dlaczego powstały, i spokojnie je rozwiązać.
+\end{importantbox}
+
+
+\subsection{Anatomia wzorowego repozytorium na GitHubie}
+Dobrze prowadzone repozytorium jest czytelne i łatwe w nawigacji. Powinno zawierać:
+\begin{itemize}
+    \item \textbf{Plik \texttt{README.md}:} To "strona główna" Twojego projektu z opisem i instrukcjami.
+    \item \textbf{Plik \texttt{.gitignore}:} Dba o to, by w repozytorium nie znalazły się niepotrzebne pliki.
+    \item \textbf{Przejrzysta historia commitów:} Każdy commit jest mały i ma jasny, zrozumiały opis.
+\end{itemize}
+
+\subsection{GUI dla Gita: GitHub Desktop}
+\begin{definitionbox}{GitHub Desktop}
+To oficjalna, darmowa aplikacja od GitHuba, która pozwala na wykonywanie większości operacji w Gicie za pomocą kliknięć, a nie komend. Jest świetna na początek.
+\end{definitionbox}
+
+\subsection{Uwierzytelnianie: Osobisty Token Dostępu (PAT)}
+Zamiast hasła, do uwierzytelniania w terminalu używa się \textbf{Osobistego Tokenu Dostępu (PAT)}.
+\begin{itemize}
+    \item \textbf{Jak go wygenerować?:} Zaloguj się na GitHubie, wejdź w \texttt{Settings} $\rightarrow$ \texttt{Developer settings} $\rightarrow$ \texttt{Personal access tokens} i kliknij \texttt{Generate new token}.
+    \item \textbf{Ważne:} Po wygenerowaniu tokena \textbf{skopiuj go i zapisz w bezpiecznym miejscu}. Już nigdy więcej go nie zobaczysz!
+    \item \textbf{Jak go użyć?:} Gdy terminal poprosi o hasło podczas \texttt{git push}, wklej skopiowany token.
+\end{itemize}
+
+\begin{importantbox}{Pełny cykl pracy: od zera do GitHuba}
+\textbf{Scenariusz A: Pierwsze wysłanie projektu na GitHuba}
+\begin{enumerate}
+    \item Stwórz nowe, puste repozytorium na stronie GitHub.com.
+    \item W swoim lokalnym folderze projektu, zainicjuj repozytorium Gita: \\
+    \texttt{git init}
+    \item Dodaj wszystkie pliki do poczekalni i stwórz pierwszy commit: \\
+    \texttt{git add .} \\
+    \texttt{git commit -m "First commit"}
+    \item Połącz swoje lokalne repozytorium ze zdalnym na GitHubie (URL skopiuj ze strony GitHuba): \\
+    \texttt{git remote add origin link\_do\_twojego\_repozytorium}
+    \item Upewnij się, że główna gałąź nazywa się \texttt{main} (dobra praktyka): \\
+    \texttt{git branch -M main}
+    \item Wyślij swoje commity na serwer GitHuba. Opcja \texttt{-u} ustawia zdalną gałąź jako domyślną dla przyszłych poleceń \texttt{push}: \\
+    \texttt{git push -u origin main}
+\end{enumerate}
+
+\vspace{1cm} % Dodaje trochę przestrzeni między scenariuszami
+
+\textbf{Scenariusz B: Codzienny cykl pracy w zespole}
+\begin{enumerate}
+    \item \textbf{Zsynchronizuj się:} Zawsze zaczynaj od pobrania najnowszych zmian. \\
+    (\texttt{git pull origin main})
+    \item \textbf{Stwórz nową gałąź:} Utwórz i przełącz się na nową gałąź dla swojego zadania. \\
+    (\texttt{git switch -c moja-nowa-funkcja})
+    \item \textbf{Pracuj:} Wprowadzaj zmiany i regularnie rób małe, dobrze opisane commity. \\
+    (\texttt{git add .} $\rightarrow$ \texttt{git commit -m "..."})
+    \item \textbf{Wyślij gałąź na serwer:} Gdy Twoja praca jest gotowa do oceny. \\
+    (\texttt{git push origin moja-nowa-funkcja})
+    \item \textbf{Stwórz Pull Request:} Na stronie GitHub.com, aby poprosić o włączenie Twoich zmian.
+    \item \textbf{Scal (Merge):} Po akceptacji, Twoje zmiany stają się częścią głównej gałęzi projektu.
+\end{enumerate}
+\end{importantbox}
+
+
+\end{document}
