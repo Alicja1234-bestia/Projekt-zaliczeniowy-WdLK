@@ -1,29 +1,6 @@
 
-\documentclass{article}
 
-% Pakiety umożliwiające dodawanie grafik, formuł matematycznych i polskich znaków
-\usepackage{graphicx} % dodawanie obrazków do dokumentu
-\usepackage{xcolor}
-\usepackage{amsmath, amssymb, amsfonts, amsthm} % tworzenie wyrażeń matematycznych i symboli
-\usepackage[T1]{fontenc} % obsługa polskich znaków diakrytycznych
-%\usepackage[polish]{babel} % alternatywne ustawienie języka dokumentu na polski
-
-% Definicje środowisk do twierdzeń i dowodów
-\newtheorem{thm}{Twierdzenie}
-\newtheorem{lem}{Lemat}
-\newenvironment{dwd}{\paragraph{Dowód:}}{\hfill$\square$}
-
-% Nagłówek dokumentu z tytułem, autorem i datą
-\title{Laboratorium 3}
-\author{Maciek Tadej \thanks{Instytut Matematyczny UWr}}
-\date{\today}
-
-\begin{document}
-
-% Tworzenie strony tytułowej
-\maketitle
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Laboratorium 2}
 
 % Sekcja wstępna z przykładami formatowania tekstu
 \section{Formatowanie tekstu}
@@ -162,7 +139,7 @@ Możemy zdefiniować funkcję $f_1: \mathbb{R} \to [-1, 1]$ w następujący spos
     f_1(x) = \sin(\pi x)
 \end{equation}
 
-Korzystając ze wzorów \eqref{eq:sin_def} oraz \eqref{eq:tanh}, możemy obliczyć pierwszą i drugą pochodną funkcji $f_1(x)$:
+Korzystając ze wzorów \eqref{eq:sin_def}, możemy obliczyć pierwszą i drugą pochodną funkcji $f_1(x)$:
 \begin{align} \label{eq:derivatives}
     f_1'(x) &= \pi \cos(\pi x), \\
     f_1''(x) &= -\pi^2 \sin(\pi x).
@@ -319,7 +296,7 @@ Całka oznaczona funkcji $f(x)$ na przedziale $[a, b]$:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Zbiory i logika}
+\section{Zbiory i logika}
 
 \paragraph{Podstawowe operacje na zbiorach} W LaTeX możemy użyć różnych symboli do operacji na zbiorach, takich jak:
 \begin{itemize}
@@ -364,7 +341,7 @@ oraz prawo przemienności sumy i iloczynu:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Ciągi, sumy i szeregi}
+\section{Ciągi, sumy i szeregi}
 
 \paragraph{Ciągi liczbowe} W LaTeX możemy zapisywać ciągi liczbowe, wskazując ich indeksy dolne i górne:
 \begin{equation}
@@ -505,4 +482,6 @@ A oto wyjaśnienie poszczególnych elementów:
     \caption{Caption}
     \label{fig:enter-label}
 \end{figure}
+
+
 
