@@ -1,0 +1,347 @@
+\documentclass[a4paper, 12pt]{article}
+
+% --- PAKIETY ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{beramono}
+\usepackage{tabularx} % Do lepszych tabel
+
+% --- NOWE PAKIETY DO OKIENEK TERMINALA ---
+\usepackage{minted} % Do kolorowania składni (wymaga -shell-escape)
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,breakable} % Załadowanie bibliotek tcolorbox
+
+% --- USTAWIENIA STRONY ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\definecolor{titlebg}{HTML}{4A90E2}
+
+% --- USTAWIENIA HYPERLINKÓW ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titlebg,
+    urlcolor=titlebg,
+    citecolor=titlebg,
+}
+
+% --- NAGŁÓWEK I STOPKA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Wprowadzenie do pracy w systemie Linux}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- STYLE DLA RAMEK TCOLORBOX ---
+\newtcolorbox{definitionbox}[1]{
+    colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
+    colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
+    bottomrule=0.5pt, toprule=0.5pt, breakable
+}
+
+\newtcolorbox{importantbox}[1]{
+    colback=yellow!10, colframe=orange!80!black, fonttitle=\bfseries,
+    title=#1, boxrule=1pt, arc=2mm, breakable
+}
+
+% --- POPRAWIONE ŚRODOWISKO "TERMINAL" ---
+\newtcblisting{terminal}{
+    listing only, 
+    listing engine=minted,
+    minted language=bash,
+    minted style=vs, % Popularny ciemny motyw
+    minted options={
+        autogobble, 
+        breaklines, 
+        fontsize=\footnotesize
+    },
+    colback=black!70, % Ciemne tło terminala
+    colframe=black!50,
+    breakable,
+    arc=3mm,
+    boxrule=1pt,
+    left=5mm, top=3mm, bottom=3mm,
+    title={\hspace{-3mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=red!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=yellow!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=green!70!black, arc=3mm]{}
+        \hspace{4mm} \bfseries\small Terminal -- Bash
+    },
+}
+
+
+% --- STRONA TYTUŁOWA ---
+\title{\bfseries Wprowadzenie do pracy w środowisku Linux \\ \large Część 2: Automatyzacja i Zarządzanie Systemem}
+\author{Opracowanie dla studentów matematyki}
+\date{\today}
+
+% --- POCZĄTEK DOKUMENTU ---
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Skrypty Bash – Wprowadzenie do automatyzacji}
+\begin{definitionbox}{Skrypt powłoki (shell script)}
+Jest to plik tekstowy zawierający sekwencję poleceń, które są wykonywane przez powłokę linia po linii. Skrypty pozwalają zautomatyzować złożone lub powtarzalne zadania, takie jak przygotowywanie danych do analizy, uruchamianie symulacji numerycznych, tworzenie kopii zapasowych czy generowanie cyklicznych raportów.
+\end{definitionbox}
+
+Zamiast ręcznie wpisywać dziesięciu poleceń, aby pobrać dane, przetworzyć je i wygenerować wykres, możemy zapisać je w skrypcie i uruchomić za pomocą jednej komendy.
+
+\subsection{Tworzenie i edycja skryptu: edytor \texttt{nano}}
+Do tworzenia i edycji plików tekstowych w terminalu służą edytory tekstu. Jednym z najprostszych jest \texttt{nano}.
+\begin{terminal}
+# Otwórz (lub utwórz) plik o nazwie `analiza.sh` w edytorze nano
+$ nano analiza.sh
+\end{terminal}
+Po otwarciu edytora, na dole ekranu widoczne są najważniejsze skróty klawiszowe (znak \texttt{\^} oznacza klawisz \texttt{Ctrl}).
+\begin{itemize}
+    \item \texttt{\^O} (Ctrl+O): Zapisz plik (\textit{Write Out}).
+    \item \texttt{\^X} (Ctrl+X): Wyjdź z edytora (\textit{Exit}).
+\end{itemize}
+
+Wpiszmy w edytorze \texttt{nano} treść naszego pierwszego skryptu:
+\begin{minted}[frame=lines,framesep=2mm,fontsize=\footnotesize]{bash}
+#!/bin/bash
+# Prosty skrypt analityczny
+# 1. Tworzy katalog na wyniki
+# 2. Zapisuje w nim log z datą rozpoczęcia
+# 3. Symuluje długotrwałe obliczenia
+
+echo "Rozpoczynam analizę..."
+mkdir -p wyniki_analizy
+date > wyniki_analizy/log.txt
+echo "Przeprowadzam symulację..."
+sleep 5 # Czeka 5 sekund
+echo "Analiza zakończona." >> wyniki_analizy/log.txt
+date >> wyniki_analizy/log.txt
+\end{minted}
+
+\section{System uprawnień plików}
+Zanim uruchomimy nasz skrypt, musimy nadać mu prawo do wykonania. W Linuksie każdy plik i katalog ma precyzyjnie określone uprawnienia, które decydują o tym, kto i w jaki sposób może z nim wchodzić w interakcję.
+
+Podstawą systemu uprawnień są trzy fundamentalne prawa, reprezentowane przez litery:
+\begin{itemize}
+    \item \textbf{r (read)} – Prawo do \textbf{odczytu}.
+    \begin{itemize}
+        \item Dla pliku: pozwala na przeglądanie jego zawartości (np. poleceniem \texttt{cat}).
+        \item Dla katalogu: pozwala na wylistowanie jego zawartości (np. poleceniem \texttt{ls}).
+    \end{itemize}
+    \item \textbf{w (write)} – Prawo do \textbf{zapisu}.
+    \begin{itemize}
+        \item Dla pliku: pozwala na modyfikowanie jego zawartości (edycję, nadpisywanie).
+        \item Dla katalogu: pozwala na tworzenie, usuwanie i zmianę nazw plików wewnątrz tego katalogu.
+    \end{itemize}
+    \item \textbf{x (execute)} – Prawo do \textbf{wykonania}.
+    \begin{itemize}
+        \item Dla pliku: pozwala na uruchomienie go jako programu lub skryptu.
+        \item Dla katalogu: pozwala na "wejście" do niego (np. poleceniem \texttt{cd}).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Odczyt uprawnień: Anatomia \texttt{ls -l}}
+Wynik polecenia \texttt{ls -l} zawiera szczegółowe informacje, w tym 10-znakowy ciąg opisujący uprawnienia:
+\begin{terminal}
+$ ls -l analiza.sh
+-rw-r--r-- 1 student users 215 paź 26 10:30 analiza.sh
+\end{terminal}
+
+\begin{definitionbox}{Analiza uprawnień: \texttt{-rw-r--r--}}
+Ten 10-znakowy ciąg dzielimy na cztery części:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Znak 1} & \textbf{Znaki 2-4} & \textbf{Znaki 5-7} & \textbf{Znaki 8-10} \\
+\hline
+\texttt{-} & \texttt{rw-} & \texttt{r--} & \texttt{r--} \\
+\hline
+Typ pliku & Właściciel & Grupa & Inni \\
+\hline
+\end{tabular}
+\end{center}
+\begin{itemize}
+    \item \textbf{Typ pliku}: \texttt{-} oznacza zwykły plik, \texttt{d} to katalog (directory).
+    \item \textbf{Właściciel (user)}: Uprawnienia dla właściciela pliku. Tutaj: odczyt (\texttt{r}) i zapis (\texttt{w}).
+    \item \textbf{Grupa (group)}: Uprawnienia dla grupy. Tutaj: tylko odczyt (\texttt{r}).
+    \item \textbf{Inni (others)}: Uprawnienia dla pozostałych. Tutaj: tylko odczyt (\texttt{r}).
+    \item Myślnik \texttt{-} w miejscu uprawnienia oznacza jego brak.
+\end{itemize}
+\end{definitionbox}
+
+\subsection{Zmiana uprawnień: polecenie \texttt{chmod}}
+Polecenie \texttt{chmod} (change mode) pozwala modyfikować te uprawnienia.
+
+\begin{terminal}
+# Zobaczmy obecne uprawnienia
+$ ls -l analiza.sh
+-rw-r--r-- 1 student users 215 paź 26 10:30 analiza.sh
+
+# Nadajmy właścicielowi prawo do wykonania.
+$ chmod rwx r-x r-x analiza.sh
+
+# Sprawdźmy ponownie. Znak `x` został dodany, a nazwa pliku zmieniła kolor.
+$ ls -l analiza.sh
+-rwxr-xr-x 1 student users 215 paź 26 10:32 analiza.sh
+\end{terminal}
+
+\begin{importantbox}{Uprawnienia jako system ósemkowy}
+Każde z trzech uprawnień (\texttt{r}, \texttt{w}, \texttt{x}) można przedstawić jako bit w liczbie 3-bitowej. Jest to naturalna konsekwencja potęg dwójki:
+\begin{itemize}
+    \item \textbf{r} (read) = $2^2$ = \textbf{4}
+    \item \textbf{w} (write) = $2^1$ = \textbf{2}
+    \item \textbf{x} (execute) = $2^0$ = \textbf{1}
+\end{itemize}
+Sumując te wartości, otrzymujemy jedną cyfrę (od 0 do 7) dla każdej kategorii użytkowników (właściciel, grupa, inni). Przykładowo, \texttt{chmod 754 plik.txt} oznacza:
+\begin{itemize}
+    \item \textbf{7} dla właściciela: 4+2+1 $\rightarrow$ \texttt{rwx}
+    \item \textbf{5} dla grupy: 4+0+1 $\rightarrow$ \texttt{r-x}
+    \item \textbf{4} dla innych: 4+0+0 $\rightarrow$ \texttt{r---}
+\end{itemize}
+\end{importantbox}
+
+\begin{terminal}
+# Zobaczmy obecne uprawnienia
+$ ls -l analiza.sh
+-rw-r--r-- 1 student users 215 paź 26 10:30 analiza.sh
+
+# Nadajmy właścicielowi prawo do wykonania.
+# Chcemy: rwx r-x r-x  ->  (4+2+1)(4+0+1)(4+0+1)  ->  755
+$ chmod 755 analiza.sh
+
+# Sprawdźmy ponownie. Znak `x` został dodany, a nazwa pliku zmieniła kolor.
+$ ls -l analiza.sh
+-rwxr-xr-x 1 student users 215 paź 26 10:32 analiza.sh
+\end{terminal}
+
+\begin{tcolorbox}[colback=black!5, colframe=titlebg, title=Pełna tabela systemu ósemkowego uprawnień (0-7), halign=center]
+\centering
+\begin{tabularx}{\linewidth}{|c|c|c|X|}
+\hline
+\textbf{Liczba} & \textbf{Postać binarna} & \textbf{Suma} & \textbf{Znaczenie uprawnień} \\
+\textbf{(Octal)} & \textbf{(rwx)} & & \\
+\hline
+\hline
+0 & \texttt{----} & 0+0+0 & Brak jakichkolwiek uprawnień. Plik jest całkowicie niedostępny. \\
+\hline
+1 & \texttt{---x} & 0+0+1 & Tylko wykonanie. Umożliwia wejście do katalogu lub uruchomienie pliku binarnego, ale nie pozwala na odczyt jego zawartości. \\
+\hline
+2 & \texttt{-w-} & 0+2+0 & Tylko zapis. Rzadko używane samodzielnie, ponieważ aby zapisać plik, zazwyczaj trzeba go najpierw odczytać. \\
+\hline
+3 & \texttt{-wx} & 0+2+1 & Zapis i wykonanie. Pozwala na modyfikację i uruchomienie pliku. \\
+\hline
+4 & \texttt{r---} & 4+0+0 & Tylko odczyt. Typowe uprawnienie dla plików z danymi, które nie powinny być modyfikowane przez wszystkich. \\
+\hline
+5 & \texttt{r-x} & 4+0+1 & Odczyt i wykonanie. Standardowe uprawnienie dla programów i katalogów, do których potrzebny jest dostęp. \\
+\hline
+6 & \texttt{rw-} & 4+2+0 & Odczyt i zapis. Typowe uprawnienie dla plików, nad którymi pracujemy (np. dokumenty, kod źródłowy). \\
+\hline
+7 & \texttt{rwx} & 4+2+1 & Pełne uprawnienia. Zapewnia pełną kontrolę nad plikiem lub katalogiem. \\
+\hline
+\end{tabularx}
+\end{tcolorbox}
+
+\subsection{Uruchamianie skryptu}
+Gdy plik ma już prawo do wykonania, możemy go uruchomić, podając jego ścieżkę.
+\begin{terminal}
+# Kropka (.) to skrót oznaczający bieżący katalog
+$ ./analiza.sh
+# Wynik:
+# Rozpoczynam analizę...
+# Przeprowadzam symulację...
+# (czekamy 5 sekund)
+# Analiza zakończona.
+\end{terminal}
+
+\section{Monitorowanie i zarządzanie procesami}
+\begin{definitionbox}{Proces}
+To uruchomiona instancja programu. Każdy program, który działa w systemie (nawet sam terminal), ma co najmniej jeden proces. Każdy proces ma unikalny, numeryczny identyfikator (\textbf{PID} - Process ID) oraz określony stan.
+\end{definitionbox}
+
+\subsection{Stany procesów}
+\begin{itemize}
+    \item \textbf{Running (R)}: Proces jest aktualnie wykonywany przez procesor lub czeka w kolejce na swoją turę.
+    \item \textbf{Sleeping (S)}: Proces czeka na zdarzenie (np. dane z dysku, odpowiedź z sieci). Większość procesów przez większość czasu jest w tym stanie.
+    \item \textbf{Stopped (T)}: Proces został zatrzymany (np. przez użytkownika) i może być wznowiony.
+    \item \textbf{Zombie (Z)}: Proces zakończył działanie, ale jego wpis w tablicy procesów wciąż istnieje, ponieważ proces nadrzędny nie odczytał jego statusu zakończenia.
+\end{itemize}
+
+\subsection{Interaktywny monitoring: polecenie \texttt{top}}
+\texttt{top} to fundamentalne narzędzie diagnostyczne. Poza wyświetlaniem listy procesów, pozwala na interaktywne zarządzanie widokiem.
+\begin{importantbox}{Interaktywne polecenia w \texttt{top}}
+Będąc w \texttt{top}, wciśnij klawisz, aby zmienić zachowanie:
+\begin{itemize}
+    \item \texttt{M} (duże M): Sortuj procesy według użycia pamięci (\%MEM).
+    \item \texttt{P} (duże P): Sortuj procesy według użycia CPU (\%CPU) -- domyślne.
+    \item \texttt{k}: "Zabij" proces. \texttt{top} zapyta o PID procesu do zabicia.
+    \item \texttt{h}: Wyświetl pomoc.
+    \item \texttt{q}: Wyjdź.
+\end{itemize}
+\end{importantbox}
+\begin{definitionbox}{Ciekawostka: \texttt{htop}}
+\texttt{htop} to nowocześniejsza, bardziej kolorowa i interaktywna wersja \texttt{top}. Oferuje m.in. łatwiejsze przewijanie i zabijanie procesów za pomocą klawiszy funkcyjnych.
+\end{definitionbox}
+
+\subsection{Wyszukiwanie i zabijanie procesów}
+Ręczne szukanie PID w \texttt{top} jest nieefektywne. Lepiej użyć dedykowanych narzędzi.
+
+\subsubsection{Wyszukiwanie procesów: \texttt{pgrep}}
+Polecenie \texttt{pgrep} (process grep) wyszukuje procesy po nazwie i zwraca ich PID.
+\begin{terminal}
+# Uruchommy w tle proces, który będzie długo działał
+$ sleep 600 &
+[1] 12345
+
+# Znajdźmy PID procesu o nazwie `sleep`
+$ pgrep sleep
+12345
+\end{terminal}
+
+\subsubsection{Zabijanie procesów: sygnały i \texttt{kill}}
+Polecenie \texttt{kill} nie "zabija" procesu wprost. Wysyła do niego \textbf{sygnał}, czyli komunikat systemowy. Proces może na sygnał zareagować, np. grzecznie się zamykając.
+\begin{center}
+\begin{tcolorbox}[colback=black!5, colframe=titlebg, width=0.95\textwidth]
+\begin{tabularx}{\linewidth}{|c|c|X|}
+\hline
+\textbf{Sygnał} & \textbf{Numer} & \textbf{Opis i zastosowanie} \\
+\hline
+\texttt{SIGTERM} & 15 & \textbf{Terminate (zakończ)}. Domyślny, "uprzejmy" sygnał. Prosi proces o zakończenie pracy, dając mu szansę na zapisanie danych i posprzątanie. To pierwsza próba zamknięcia programu. \\
+\hline
+\texttt{SIGKILL} & 9 & \textbf{Kill (zabij)}. Sygnał ostateczny, "brutalny". Nie może być zignorowany. Jądro systemu natychmiast usuwa proces z pamięci. Używany, gdy proces się zawiesił i nie reaguje na \texttt{SIGTERM}. \\
+\hline
+\texttt{SIGINT} & 2 & \textbf{Interrupt (przerwij)}. Sygnał wysyłany po naciśnięciu \texttt{Ctrl+C} w terminalu. \\
+\hline
+\end{tabularx}
+\end{tcolorbox}
+\end{center}
+
+\begin{terminal}
+# Znajdź PID procesu `sleep`
+$ pgrep sleep
+12345
+
+# Wyślij domyślny sygnał SIGTERM (prośba o zamknięcie)
+$ kill 12345
+
+# Jeśli proces nie reaguje, użyj SIGKILL
+# kill -9 <PID> LUB kill -SIGKILL <PID>
+$ kill -9 12345
+\end{terminal}
+
+\begin{importantbox}{Polecenie \texttt{pkill}}
+\texttt{pkill} łączy w sobie funkcjonalność \texttt{pgrep} i \texttt{kill}. Znajduje procesy po nazwie i od razu wysyła do nich sygnał. Jest bardzo wygodne, ale też bardziej ryzykowne -- można przypadkowo zabić wiele procesów naraz.
+\begin{center}
+\texttt{pkill -9 nazwa\_procesu}
+\end{center}
+\end{importantbox}
+
+
+\end{document}

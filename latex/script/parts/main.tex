@@ -1,0 +1,509 @@
+
+\documentclass{article}
+
+% Pakiety umożliwiające dodawanie grafik, formuł matematycznych i polskich znaków
+\usepackage{graphicx} % dodawanie obrazków do dokumentu
+\usepackage{xcolor}
+\usepackage{amsmath, amssymb, amsfonts, amsthm} % tworzenie wyrażeń matematycznych i symboli
+\usepackage[T1]{fontenc} % obsługa polskich znaków diakrytycznych
+%\usepackage[polish]{babel} % alternatywne ustawienie języka dokumentu na polski
+
+% Definicje środowisk do twierdzeń i dowodów
+\newtheorem{thm}{Twierdzenie}
+\newtheorem{lem}{Lemat}
+\newenvironment{dwd}{\paragraph{Dowód:}}{\hfill$\square$}
+
+% Nagłówek dokumentu z tytułem, autorem i datą
+\title{Laboratorium 3}
+\author{Maciek Tadej \thanks{Instytut Matematyczny UWr}}
+\date{\today}
+
+\begin{document}
+
+% Tworzenie strony tytułowej
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Sekcja wstępna z przykładami formatowania tekstu
+\section{Formatowanie tekstu}
+
+W tej sekcji pokażemy różne sposoby formatowania tekstu w \LaTeX{}.
+
+\subsection{Styl i wyróżnienia tekstu}
+Możemy stosować różne style tekstu:
+\begin{itemize}
+    \item \textbf{Pogrubienie} za pomocą komendy \texttt{\textbackslash textbf\{...\}}.
+    \item \textit{Kursywa} za pomocą komendy \texttt{\textbackslash textit\{...\}}.
+    \item \underline{Podkreślenie} za pomocą komendy \texttt{\textbackslash underline\{...\}}.
+\end{itemize}
+
+\subsection{Kolorowanie tekstu}
+Kolorowanie tekstu wymaga użycia pakietu \texttt{color} lub \texttt{xcolor}. Możemy kolorować tekst na różne kolory, np.:
+\begin{itemize}
+    \item \textcolor{blue}{Niebieski} za pomocą komendy \texttt{\textbackslash textcolor\{blue\}\{...\}}.
+    \item \textcolor{red}{Czerwony} za pomocą komendy \texttt{\textbackslash textcolor\{red\}\{...\}}.
+    \item \textcolor{green}{Zielony} za pomocą komendy \texttt{\textbackslash textcolor\{green\}\{...\}}.
+\end{itemize}
+
+Dostępne są także bardziej złożone kolory:
+\textcolor[rgb]{0.5,0,0.5}{Fioletowy (RGB)}, \textcolor[RGB]{255,128,0}{Pomarańczowy (RGB)}.
+
+\subsection{Zmiana wielkości czcionki}
+W \LaTeX{} mamy możliwość zmiany wielkości tekstu:
+\begin{itemize}
+    \item {\tiny Bardzo mały tekst} za pomocą \texttt{\textbackslash tiny}.
+    \item {\scriptsize Mały tekst} za pomocą \texttt{\textbackslash scriptsize}.
+    \item {\footnotesize Tekst do przypisów} za pomocą \texttt{\textbackslash footnotesize}.
+    \item {\small Mała czcionka} za pomocą \texttt{\textbackslash small}.
+    \item {\normalsize Normalna wielkość czcionki} za pomocą \texttt{\textbackslash normalsize}.
+    \item {\large Duży tekst} za pomocą \texttt{\textbackslash large}.
+    \item {\Large Większy tekst} za pomocą \texttt{\textbackslash Large}.
+    \item {\LARGE Jeszcze większy tekst} za pomocą \texttt{\textbackslash LARGE}.
+    \item {\huge Bardzo duży tekst} za pomocą \texttt{\textbackslash huge}.
+    \item {\Huge Największy tekst} za pomocą \texttt{\textbackslash Huge}.
+\end{itemize}
+
+\subsection{Wyrównywanie tekstu}
+Aby wyrównać tekst, możemy używać różnych środowisk:
+\begin{itemize}
+    \item \texttt{center} do centrowania tekstu:
+    \begin{center}
+        Ten tekst jest wyśrodkowany.
+    \end{center}
+    
+    \item \texttt{flushleft} do wyrównania tekstu do lewej strony:
+    \begin{flushleft}
+        Ten tekst jest wyrównany do lewej.
+    \end{flushleft}
+    
+    \item \texttt{flushright} do wyrównania tekstu do prawej strony:
+    \begin{flushright}
+        Ten tekst jest wyrównany do prawej.
+    \end{flushright}
+\end{itemize}
+
+\subsection{Inne przydatne formaty}
+\begin{itemize}
+    \item \texttt{\textbackslash emph\{...\}} do podkreślenia ważnych słów, np. \emph{to jest bardzo ważne}.
+    \item Pisanie kodu lub komend w trybie maszynopisu za pomocą \texttt{\textbackslash texttt\{...\}}, np. \texttt{print("Hello, world!")}.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Listy}
+
+W \LaTeX{} możemy tworzyć listy numerowane, nienumerowane oraz listy z niestandardowymi symbolami. Przykłady poniżej pokazują, jak wykorzystać różne typy list oraz jak je dostosować.
+
+\subsection{Listy numerowane}
+Listy numerowane tworzymy za pomocą środowiska \texttt{enumerate}. Numery elementów są generowane automatycznie.
+\begin{enumerate}
+    \item Element pierwszy.
+    \item Element drugi.
+    \item Element trzeci.
+\end{enumerate}
+
+\subsection{Listy nienumerowane}
+Listy nienumerowane są tworzone za pomocą środowiska \texttt{itemize}. Domyślnie każdy element listy zaczyna się od punktu, ale można to zmienić, definiując inny symbol.
+\begin{itemize}
+    \item Element pierwszy.
+    \item Element drugi.
+\end{itemize}
+
+Dostosowywanie symboli w listach nienumerowanych:
+\begin{itemize}
+    \item[$\star$] Symbol gwiazdki przy pierwszym elemencie.
+    \item[$\diamond$] Symbol rombu przy drugim elemencie.
+\end{itemize}
+
+\subsection{Listy z niestandardowymi etykietami}
+Możemy także dostosować listy do własnych potrzeb, definiując niestandardowe etykiety:
+\begin{itemize}
+    \item[(i)] Element pierwszy (etykieta rzymska).
+    \item[(ii)] Element drugi.
+\end{itemize}
+
+\begin{itemize}
+    \item[(kotek 1)] Element pierwszy (etykieta tekstowa).
+    \item[(kotek 2)] Element drugi.
+\end{itemize}
+
+\subsection{Listy zagnieżdżone}
+Listy można zagnieżdżać, tworząc listy wewnątrz list:
+\begin{enumerate}
+    \item Element pierwszy.
+    \begin{itemize}
+        \item Pod-element pierwszy.
+        \item Pod-element drugi.
+    \end{itemize}
+    \item Element drugi.
+\end{enumerate}
+
+\subsection{Listy opisowe}
+Listy opisowe (\texttt{description}) pozwalają na stosowanie niestandardowych opisów zamiast numerów czy kropek. Jest to przydatne przy tworzeniu definicji lub wyliczeń o charakterze opisowym:
+\begin{description}
+    \item[Pierwszy element] Opis pierwszego elementu.
+    \item[Drugi element] Opis drugiego elementu.
+\end{description}
+
+Dzięki różnym opcjom tworzenia list, \LaTeX{} pozwala na dużą elastyczność w organizacji informacji.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Wyrażenia matematyczne}
+
+W tej sekcji zaprezentujemy różne sposoby formatowania wyrażeń matematycznych w \LaTeX{}.
+
+\subsection{Definiowanie funkcji i odniesienia do równań}
+
+Możemy zdefiniować funkcję $f_1: \mathbb{R} \to [-1, 1]$ w następujący sposób:
+\begin{equation} \label{eq:sin_def}
+    f_1(x) = \sin(\pi x)
+\end{equation}
+
+Korzystając ze wzorów \eqref{eq:sin_def} oraz \eqref{eq:tanh}, możemy obliczyć pierwszą i drugą pochodną funkcji $f_1(x)$:
+\begin{align} \label{eq:derivatives}
+    f_1'(x) &= \pi \cos(\pi x), \\
+    f_1''(x) &= -\pi^2 \sin(\pi x).
+\end{align}
+
+\subsection{Macierze, wektory i operacje na nich}
+
+W \LaTeX{} możemy definiować nie tylko macierze, ale również wektory oraz wykonywać operacje na wektorach i macierzach. Przykładowo, macierz $A$ może wyglądać następująco:
+\begin{equation} \label{eq:matrix_A}
+    A = 
+    \begin{pmatrix}
+        1 & 2 \\ 
+        3 & 4
+    \end{pmatrix}.
+\end{equation}
+
+Wektory można zapisać w formie kolumnowej lub wierszowej. Przykład wektora kolumnowego:
+\begin{equation} \label{eq:vector_col}
+    \mathbf{v} = 
+    \begin{pmatrix}
+        1 \\ 
+        2 \\ 
+        3 
+    \end{pmatrix}.
+\end{equation}
+
+Przykład wektora wierszowego:
+\begin{equation} \label{eq:vector_row}
+    \mathbf{w} = 
+    \begin{pmatrix}
+        4 & 5 & 6 
+    \end{pmatrix}.
+\end{equation}
+
+Oto kilka operacji na wektorach i macierzach, często stosowanych w matematyce i analizie danych.
+
+\paragraph{Transpozycja macierzy i wektorów}
+Transpozycję macierzy $A$ zapisujemy jako $A^T$:
+\begin{equation} \label{eq:transpose}
+    A^T = 
+    \begin{pmatrix}
+        1 & 3 \\ 
+        2 & 4 
+    \end{pmatrix}.
+\end{equation}
+
+Transpozycję wektora wierszowego $\mathbf{w}$ można zapisać jako wektor kolumnowy $\mathbf{w}^T$:
+\begin{equation} \label{eq:vector_transpose}
+    \mathbf{w}^T = 
+    \begin{pmatrix}
+        4 \\ 
+        5 \\ 
+        6 
+    \end{pmatrix}.
+\end{equation}
+
+\paragraph{Iloczyn skalarny}
+Iloczyn skalarny dwóch wektorów $\mathbf{v}$ i $\mathbf{w}$ jest definiowany jako:
+\begin{equation} \label{eq:dot_product}
+    \mathbf{v} \cdot \mathbf{w} = 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 32.
+\end{equation}
+
+\paragraph{Iloczyn macierzy}
+Iloczyn macierzy $A$ i $B$ (jeśli są zgodne wymiarowo) jest zapisany jako $A B$. Przykład:
+\begin{equation} \label{eq:matrix_multiplication}
+    A B = 
+    \begin{pmatrix}
+        1 & 2 \\ 
+        3 & 4 
+    \end{pmatrix}
+    \begin{pmatrix}
+        5 & 6 \\ 
+        7 & 8 
+    \end{pmatrix}
+    = 
+    \begin{pmatrix}
+        19 & 22 \\ 
+        43 & 50 
+    \end{pmatrix}.
+\end{equation}
+
+\paragraph{Norma wektora}
+Norma wektora $\mathbf{v}$, oznaczona jako $\|\mathbf{v}\|$, jest definiowana jako:
+\begin{equation} \label{eq:vector_norm}
+    \|\mathbf{v}\| = \sqrt{1^2 + 2^2 + 3^2} = \sqrt{14}.
+\end{equation}
+Norma jest często stosowana jako miara długości lub wielkości wektora.
+
+\paragraph{Inne symbole i operacje}
+Inne przydatne symbole matematyczne, stosowane w kontekście wektorów i macierzy, to:
+\[
+\det(A) \text{ - wyznacznik macierzy } A, \quad A^{-1} \text{ - macierz odwrotna do } A.
+\]
+
+\subsection{Pochodne i całki}
+
+W \LaTeX{} mamy możliwość zapisu wielu operatorów różniczkowych i całkowych, takich jak pochodne, gradient, dywergencja, oraz różne rodzaje całek. Poniżej przedstawiamy przykłady.
+
+\paragraph{Pochodna zwykła} Pochodna funkcji $f(x)$ względem $x$ jest zapisana jako:
+\begin{equation}
+    f'(x) = \frac{d}{dx} f(x).
+\end{equation}
+
+\paragraph{Pochodna cząstkowa} Pochodna cząstkowa funkcji $g(x, y)$ względem zmiennej $x$:
+\begin{equation}
+    \frac{\partial g}{\partial x}.
+\end{equation}
+
+\paragraph{Pochodna drugiego rzędu} Pochodna drugiego rzędu funkcji $f(x)$:
+\begin{equation}
+    f''(x) = \frac{d^2}{dx^2} f(x),
+\end{equation}
+a w przypadku pochodnej cząstkowej funkcji $g(x, y)$:
+\begin{equation}
+    \frac{\partial^2 g}{\partial x^2}.
+\end{equation}
+
+\paragraph{Pochodna mieszana} Pochodna mieszana drugiego rzędu funkcji $g(x, y)$ względem $x$ i $y$:
+\begin{equation}
+    \frac{\partial^2 g}{\partial x \partial y}.
+\end{equation}
+
+\paragraph{Gradient} Gradient funkcji skalarnej $f(x, y, z)$ jest zapisywany jako:
+\begin{equation}
+    \nabla f = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z} \right).
+\end{equation}
+
+\paragraph{Dywergencja} Dywergencja pola wektorowego $\mathbf{F}(x, y, z) = (F_x, F_y, F_z)$:
+\begin{equation}
+    \nabla \cdot \mathbf{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}.
+\end{equation}
+
+\paragraph{Rotacja (wir)} Rotacja (wir) pola wektorowego $\mathbf{F}(x, y, z)$:
+\begin{equation}
+    \nabla \times \mathbf{F} = \left( \frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z}, \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x}, \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y} \right).
+\end{equation}
+
+\paragraph{Laplasjan} Laplasjan funkcji skalarnej $f(x, y, z)$, który jest równy dywergencji gradientu:
+\begin{equation}
+    \Delta f = \nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2}.
+\end{equation}
+
+\paragraph{Całka nieoznaczona}
+Całka nieoznaczona funkcji $f(x)$ względem $x$:
+\begin{equation}
+    \int f(x) \, dx.
+\end{equation}
+
+\paragraph{Całka oznaczona}
+Całka oznaczona funkcji $f(x)$ na przedziale $[a, b]$:
+\begin{equation}
+    \int_a^b f(x) \, dx.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Zbiory i logika}
+
+\paragraph{Podstawowe operacje na zbiorach} W LaTeX możemy użyć różnych symboli do operacji na zbiorach, takich jak:
+\begin{itemize}
+    \item Zawieranie: $A \subset B$ oznacza, że zbiór $A$ jest podzbiorem zbioru $B$, natomiast $A \subseteq B$ to zawieranie z możliwością równości.
+    \item Suma zbiorów: $A \cup B$ reprezentuje sumę zbiorów $A$ i $B$.
+    \item Iloczyn zbiorów: $A \cap B$ oznacza część wspólną zbiorów $A$ i $B$.
+    \item Różnica zbiorów: $A \setminus B$ to różnica zbiorów $A$ i $B$, czyli elementy należące do $A$ i nie należące do $B$.
+\end{itemize}
+
+\paragraph{Symbole specjalne} Do zapisu symboli zbiorów i funkcji możemy użyć różnych oznaczeń:
+\begin{itemize}
+    \item Zbiór liczb naturalnych: $\mathbb{N}$, całkowitych: $\mathbb{Z}$, wymiernych: $\mathbb{Q}$, rzeczywistych: $\mathbb{R}$ oraz zespolonych: $\mathbb{C}$.
+    \item Przedział domknięty i otwarty: $[a, b]$ oznacza przedział domknięty, natomiast $(a, b)$ przedział otwarty.
+\end{itemize}
+
+\paragraph{Kwantyfikatory} W logice matematycznej kwantyfikatory są podstawowymi symbolami i w LaTeX zapisujemy je w następujący sposób:
+\begin{itemize}
+    \item Kwantyfikator ogólny (uniwersalny): $\forall x \in A$ oznacza „dla każdego $x$ należącego do $A$”.
+    \item Kwantyfikator szczególny (egzystencjalny): $\exists x \in A$ oznacza „istnieje $x$ należący do $A$”.
+\end{itemize}
+
+\paragraph{Implikacja i równoważność} W LaTeX dostępne są specjalne symbole dla wyrażeń logicznych:
+\begin{itemize}
+    \item Implikacja: $A \implies B$ oznacza, że „jeśli $A$, to $B$”.
+    \item Równoważność: $A \iff B$ oznacza, że „$A$ jest równoważne $B$”.
+\end{itemize}
+
+\paragraph{Prawa zbiorów} Możemy również zapisać różne prawa zbiorów, takie jak prawo De Morgana:
+\begin{equation}
+    \overline{A \cup B} = \overline{A} \cap \overline{B},
+\end{equation}
+oraz prawo przemienności sumy i iloczynu:
+\begin{equation}
+    A \cup B = B \cup A, \quad A \cap B = B \cap A.
+\end{equation}
+
+\paragraph{Zapis logiczny w matematyce} W zapisie matematycznym możemy stosować symbole, które oddają różne relacje i własności:
+\begin{itemize}
+    \item Równość: $=$, nierówność: $\neq$, mniejsze lub równe: $\leq$, większe lub równe: $\geq$.
+    \item Podzielność: $a \mid b$ oznacza, że $a$ dzieli $b$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Ciągi, sumy i szeregi}
+
+\paragraph{Ciągi liczbowe} W LaTeX możemy zapisywać ciągi liczbowe, wskazując ich indeksy dolne i górne:
+\begin{equation}
+    a_1, a_2, \ldots, a_n, \ldots
+\end{equation}
+Ciąg nieskończony jest zwykle reprezentowany przez wyrażenie $\{a_n\}_{n=1}^{\infty}$, co oznacza, że $n$ rośnie do nieskończoności.
+
+\paragraph{Sumy skończone} Symbol sumy skończonej jest oznaczany jako $\sum$. Na przykład, suma pierwszych $n$ wyrazów ciągu $a_n$ może być zapisana jako:
+\begin{equation}
+    S_n = \sum_{k=1}^{n} a_k.
+\end{equation}
+W powyższym zapisie $\sum_{k=1}^{n}$ oznacza, że dodajemy elementy ciągu $a_k$ od indeksu $k=1$ do $k=n$.
+
+\paragraph{Sumy nieskończone} Dla szeregów nieskończonych, zapisujemy sumę od $k=1$ do nieskończoności. Przykład szeregu geometrycznego wygląda następująco:
+\begin{equation}
+    \sum_{k=0}^{\infty} r^k = \frac{1}{1 - r} \quad \text{dla } |r| < 1.
+\end{equation}
+Szereg harmoniczny to kolejny przykład szeregu nieskończonego:
+\begin{equation}
+    \sum_{k=1}^{\infty} \frac{1}{k}.
+\end{equation}
+
+\paragraph{Iloczyny skończone i nieskończone} W LaTeX dostępny jest również symbol iloczynu $\prod$, który można stosować do wyrażania iloczynów skończonych i nieskończonych. Przykład iloczynu skończonego:
+\begin{equation}
+    P_n = \prod_{k=1}^{n} a_k,
+\end{equation}
+gdzie mnożymy wszystkie wyrazy ciągu $a_k$ od $k=1$ do $k=n$. W przypadku iloczynu nieskończonego można zapisać:
+\begin{equation}
+    \prod_{k=1}^{\infty} \left(1 + \frac{1}{k^2}\right).
+\end{equation}
+
+\paragraph{Szeregi potęgowe} Szeregi potęgowe są reprezentowane jako suma wyrazów zależnych od kolejnych potęg zmiennej. Na przykład, szereg potęgowy dla funkcji $f(x)$ wygląda tak:
+\begin{equation}
+    f(x) = \sum_{k=0}^{\infty} c_k x^k,
+\end{equation}
+gdzie $c_k$ są współczynnikami szeregu.
+
+\paragraph{Szeregi Taylora i Maclaurina} Szereg Taylora dla funkcji $f(x)$ rozwiniętej wokół punktu $x=a$ jest wyrażony jako:
+\begin{equation}
+    f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(a)}{k!} (x - a)^k.
+\end{equation}
+Jeśli $a=0$, szereg Taylora nazywamy szeregiem Maclaurina i zapisujemy go jako:
+\begin{equation}
+    f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(0)}{k!} x^k.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Tabelki}
+
+\paragraph{Tabelka bez krawędzi} Tabelka bez krawędzi jest najprostszym rodzajem tabeli, w której nie używamy linii oddzielających komórki ani wiersze. Przykład takiej tabelki:
+
+\begin{center}
+    \begin{tabular}{c c c}
+         A & B & C \\
+         1 & 2 & 3
+    \end{tabular}
+\end{center}
+
+W tym przypadku c oznacza, że zawartość każdej kolumny jest wyśrodkowana.
+
+\paragraph{Tabelka z krawędziami poziomymi} Możemy dodać krawędzie poziome, aby oddzielić wiersze. Krawędzie poziome dodaje się za pomocą komendy \texttt{hline}. Przykład tabelki z krawędziami poziomymi:
+
+\begin{center}
+    \begin{tabular}{c c c}
+    \hline
+         A & B & C \\
+         1 & 2 & 3 \\
+    \hline
+    \end{tabular}
+\end{center}
+
+Tutaj dodaliśmy linie na górze i na dole tabeli, aby oddzielić wiersze od reszty tekstu.
+
+\paragraph{Tabelka z krawędziami poziomymi oraz pionowymi} Tabelki mogą mieć również krawędzie pionowe, które oddzielają kolumny. Aby dodać krawędzie pionowe, należy użyć symbolu | w definicji kolumn. Przykład tabelki z krawędziami pionowymi i poziomymi:
+
+\begin{center}
+    \begin{tabular}{|c | c | c|}
+    \hline
+         A & B & C \\
+    \hline
+         1 & 2 & 3 \\
+    \hline
+    \end{tabular}
+\end{center}
+
+W tym przykładzie dodaliśmy pionowe krawędzie między kolumnami i poziome krawędzie na górze, pomiędzy wierszami oraz na dole tabeli.
+
+\paragraph{Wyrównanie tekstu w komórkach} Warto również zauważyć, że w deklaracji tabeli \texttt{begin{tabular}{c c c}} używamy liter c, l, i r, które oznaczają wyrównanie tekstu w kolumnach:
+- c - wyśrodkowanie,
+- l - wyrównanie do lewej,
+- r - wyrównanie do prawej.
+
+Na przykład, jeśli chcemy wyśrodkować zawartość pierwszej kolumny, wyrównać do lewej drugą i do prawej trzecią, używamy:
+
+\begin{center}
+    \begin{tabular}{c l r}
+        Aaaaaaaaa & Bbbbbbbb & Ccccccccc \\
+        1 & 2 & 3
+    \end{tabular}
+\end{center}
+
+\section{Obrazki}
+
+Wstawianie obrazków do dokumentu w \LaTeX{} jest prostą czynnością, która pozwala na lepsze zobrazowanie omawianych treści. Aby wstawić obrazek, używamy środowiska \texttt{figure}, które pozwala również na dodanie podpisu, numeracji oraz odwołań w tekście. Poniżej znajduje się przykładowy kod:
+
+\begin{verbatim}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{obrazki/some_stock_photo.jpg}
+    \caption{Opis obrazka}
+    \label{fig:enter-label}
+\end{figure}
+\end{verbatim}
+
+\noindent
+A oto wyjaśnienie poszczególnych elementów:
+
+\begin{itemize}
+    \item \texttt{\textbackslash begin\{figure\}} i \texttt{\textbackslash end\{figure\}} – otwierają i zamykają środowisko do wstawiania obrazka. Cały kod obrazka znajduje się między tymi dwoma komendami.
+    \item \texttt{\textbackslash centering} – ustawia obrazek na środku strony (można też używać innych komend, np. \texttt{\textbackslash flushleft} dla wyrównania do lewej).
+    \item \texttt{\textbackslash includegraphics[width=0.5\linewidth]\{obrazki/some\_stock\_photo.jpg\}} – wstawia obrazek o nazwie \texttt{some\_stock\_photo.jpg}, umieszczony w katalogu \texttt{obrazki/}. Opcja \texttt{width=0.5\linewidth} oznacza, że szerokość obrazka zostanie ustawiona na 50% szerokości strony. Zamiast \texttt{linewidth} można używać innych jednostek, takich jak \texttt{cm} (centymetry) lub \texttt{in} (cale).
+    \item \texttt{\textbackslash caption\{Opis obrazka\}} – dodaje podpis pod obrazkiem. Jest to ważne, ponieważ pozwala czytelnikom zrozumieć, co przedstawia obrazek. Podpisy są również numerowane.
+    \item \texttt{\textbackslash label\{fig:enter-label\}} – umożliwia przypisanie etykiety obrazkowi, aby później odwołać się do niego w tekście przy użyciu komendy \texttt{\textbackslash ref\{fig:enter-label\}}. Dzięki temu numeracja obrazków jest automatyczna i spójna.
+\end{itemize}
+
+\subsection*{Appendix}
+\begin{itemize}
+    \item Wstawianie obrazków w \LaTeX{} jest bardzo elastyczne – można zmieniać ich rozmiar, ustawiać je w różnych miejscach strony, a także dodawać dodatkowe efekty (np. obracanie, przycinanie).
+    \item Można również korzystać z różnych formatów plików graficznych: \texttt{.png}, \texttt{.jpg}, \texttt{.pdf}, \texttt{.eps}. Zaleca się używanie formatu \texttt{.pdf} w przypadku obrazów wektorowych, ponieważ nie tracą one jakości przy zmianie rozmiaru.
+    \item Warto pamiętać, że obrazki wstawione do dokumentu zajmują miejsce, dlatego ich wstawianie może wpłynąć na układ strony. Można stosować opcje takie jak \texttt{[h]} (tutaj), \texttt{[t]} (na górze strony) czy \texttt{[b]} (na dole strony), aby wpłynąć na rozmieszczenie obrazków.
+    \item Jeśli potrzebujesz więcej kontroli nad wyglądem obrazków, np. nad ich kadrowaniem, użyj komendy \texttt{\textbackslash includegraphics[clip, trim=left bottom right top]} do przycięcia obrazu.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{obrazki/some_stock_photo.jpg}
+    \caption{Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\end{document}

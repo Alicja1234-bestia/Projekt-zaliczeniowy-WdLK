@@ -1,0 +1,389 @@
+\documentclass[a4paper, 12pt]{article}
+
+% --- PAKIETY ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{beramono}
+\usepackage{tabularx} % Do lepszych tabel
+
+% --- PAKIETY DO OKIENEK TERMINALA I KODU ---
+\usepackage{minted} % Do kolorowania składni (wymaga -shell-escape)
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,breakable} % Załadowanie bibliotek tcolorbox
+
+% --- USTAWIENIA STRONY ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\definecolor{titlebg}{HTML}{4A90E2}
+\definecolor{terminalbg}{HTML}{2D2D2D} % Ciemnoszary dla tła terminala
+
+% --- USTAWIENIA HYPERLINKÓW ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titlebg,
+    urlcolor=titlebg,
+    citecolor=titlebg,
+}
+
+% --- NAGŁÓWEK I STOPKA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Wprowadzenie do pracy w systemie Linux}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- STYLE DLA RAMEK TCOLORBOX ---
+\newtcolorbox{definitionbox}[1]{
+    colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
+    colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
+    bottomrule=0.5pt, toprule=0.5pt, breakable
+}
+
+\newtcolorbox{importantbox}[1]{
+    colback=yellow!10, colframe=orange!80!black, fonttitle=\bfseries,
+    title=#1, boxrule=1pt, arc=2mm, breakable
+}
+
+% --- ŚRODOWISKO "TERMINAL" ---
+\newtcblisting{terminal}{
+    listing only, 
+    listing engine=minted,
+    minted language=bash,
+    minted style=vs, % Zmieniono na bardziej kontrastowy styl
+    minted options={
+        autogobble, 
+        breaklines, 
+        fontsize=\footnotesize
+    },
+    colback=black!70, 
+    colframe=black!50,
+    breakable,
+    arc=3mm,
+    boxrule=1pt,
+    left=5mm, top=3mm, bottom=3mm,
+    title={\hspace{-3mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=red!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=yellow!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=green!70!black, arc=3mm]{}
+        \hspace{4mm} \bfseries\small Terminal -- Bash
+    },
+}
+
+
+% --- STRONA TYTUŁOWA ---
+\title{\bfseries Wprowadzenie do pracy w środowisku Linux \\ \large Część 3: Skrypty -- Pętle, Warunki i Przetwarzanie Danych}
+\author{Opracowanie dla studentów matematyki}
+\date{9 grudnia 2025}
+
+% --- POCZĄTEK DOKUMENTU ---
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Instrukcje Warunkowe oraz Pętle}
+Prawdziwa moc skryptów polega na ich zdolności do \textbf{powtarzania} operacji i \textbf{podejmowania decyzji}. Te dwie koncepcje -- pętle i instrukcje warunkowe -- zamieniają prostą listę poleceń w inteligentny program.
+
+\subsection{Instrukcje warunkowe: \texttt{if}}
+Instrukcja \texttt{if} pozwala skryptowi na wykonanie określonego bloku kodu tylko wtedy, gdy pewien warunek jest prawdziwy. Działa to jak rozwidlenie dróg -- skrypt wybiera ścieżkę w zależności od sytuacji.
+
+\begin{definitionbox}{Anatomia instrukcji \texttt{if}}
+Strukturę można rozbudowywać o kolejne warunki (\texttt{elif}) oraz blok domyślny (\texttt{else}), który wykona się, gdy żaden z poprzednich warunków nie będzie prawdziwy.
+\begin{terminal}
+if [[ warunek_1 ]]; then
+    # Ten kod wykona się, jeśli warunek_1 jest prawdziwy.
+    # Bash przejdzie od razu do `fi`.
+elif [[ warunek_2 ]]; then
+    # Ten kod wykona się, jeśli warunek_1 był fałszywy,
+    # ale warunek_2 jest prawdziwy.
+else
+    # Ten kod wykona się, jeśli wszystkie powyższe warunki
+    # okazały się fałszywe.
+fi
+\end{terminal}
+\textbf{Kluczowa składnia:} W Bashu warunki najczęściej umieszcza się w podwójnych nawiasach kwadratowych \texttt{[[ ... ]]}. Jest to nowoczesna i bezpieczna forma.
+\end{definitionbox}
+
+\begin{importantbox}{Operatory testów – Twój zestaw narzędzi do sprawdzania warunków}
+Bash oferuje bogaty zestaw operatorów do budowania warunków. Oto najważniejsze z nich:
+\begin{itemize}
+    \item \textbf{Testy plików (najczęstsze w skryptach):}
+    \begin{itemize}
+        \item \texttt{[[ -e \$sciezka ]]} – sprawdza, czy plik lub katalog \textbf{e}gzistuje (\textit{exists}).
+        \item \texttt{[[ -f \$sciezka ]]} – sprawdza, czy to zwykły \textbf{f}ile (plik).
+        \item \texttt{[[ -d \$sciezka ]]} – sprawdza, czy to \textbf{d}irectory (katalog).
+    \end{itemize}
+    \item \textbf{Testy napisów (zmiennych):}
+    \begin{itemize}
+        \item \texttt{[[ -z "\$zmienna" ]]} – prawda, jeśli zmienna jest pusta (\textbf{z}ero length).
+        \item \texttt{[[ -n "\$zmienna" ]]} – prawda, jeśli zmienna \textbf{n}ie jest pusta (\textit{non-empty}).
+        \item \texttt{[[ "\$a" == "\$b" ]]} – prawda, jeśli napisy są identyczne.
+    \end{itemize}
+    \item \textbf{Testy liczb całkowitych:}
+    \begin{itemize}
+        \item \texttt{[[ \$a -eq \$b ]]} – równe (\textit{equal}).
+        \item \texttt{[[ \$a -ne \$b ]]} – nie równe (\textit{not equal}).
+        \item \texttt{[[ \$a -gt \$b ]]} – większe (\textit{greater than}).
+        \item \texttt{[[ \$a -lt \$b ]]} – mniejsze (\textit{less than}).
+    \end{itemize}
+    \item \textbf{Operator negacji \texttt{!}:}
+    \begin{itemize}
+        \item \texttt{[[ ! -d "\$sciezka" ]]} – prawda, jeśli \texttt{\$sciezka} \textbf{nie jest} katalogiem.
+    \end{itemize}
+\end{itemize}
+\end{importantbox}
+
+
+\subsection{Pętle: \texttt{for} i \texttt{while}}
+Pętle służą do wielokrotnego wykonywania tego samego bloku kodu. Bez nich musielibyśmy ręcznie powielać polecenia dla każdego przetwarzanego elementu.
+
+\subsubsection{Pętla \texttt{for} -- iteracja po liście elementów}
+Pętla \texttt{for} jest idealna, gdy mamy z góry znaną listę elementów (np. listę plików w katalogu) i chcemy wykonać jakąś operację dla każdego z nich.
+
+\begin{definitionbox}{Anatomia pętli \texttt{for}}
+\begin{terminal}
+for zmienna in element1 element2 element3; do
+    # Ten blok kodu wykona się 3 razy.
+    # W pierwszej iteracji $zmienna będzie miała wartość "element1",
+    # w drugiej "element2", itd.
+    echo "Przetwarzam: $zmienna"
+done
+\end{terminal}
+Najczęstszym zastosowaniem jest iteracja po plikach: \texttt{for plik in sciezka/*}. Powłoka Bash automatycznie rozwija wzorzec \texttt{*} na listę wszystkich plików i katalogów w danej lokalizacji.
+\end{definitionbox}
+
+
+\subsubsection{Pętla \texttt{while} -- wykonywanie do spełnienia warunku}
+Pętla \texttt{while} działa inaczej: wykonuje blok kodu tak długo, jak długo jej warunek jest prawdziwy. Jest idealna w sytuacjach, gdy nie wiemy, ile będzie iteracji, np. podczas wczytywania danych z pliku linia po linii.
+
+\begin{definitionbox}{Anatomia pętli \texttt{while}}
+\begin{terminal}
+# Przykład: odliczanie od 5 do 1
+licznik=5
+while [[ $licznik -gt 0 ]]; do
+    echo "Odliczanie: $licznik"
+    # Ważne: musimy samodzielnie modyfikować warunek,
+    # w przeciwnym razie pętla będzie nieskończona!
+    licznik=$((licznik - 1))
+done
+echo "Start!"
+\end{terminal}
+Pętla \texttt{while} sprawdza warunek na początku każdej iteracji. Jeśli warunek od razu jest fałszywy, pętla nie wykona się ani razu.
+\end{definitionbox}
+
+\section{Przekazywanie argumentów do skryptu}
+Skrypty mogą przyjmować argumenty z wiersza poleceń. Wewnątrz skryptu mamy dostęp do tych argumentów za pomocą specjalnych zmiennych:
+\begin{itemize}
+    \item \texttt{\$0} – nazwa samego skryptu.
+    \item \texttt{\$1}, \texttt{\$2}, ... – pierwszy, drugi, itd. argument.
+    \item \texttt{\$\#} – całkowita liczba przekazanych argumentów.
+\end{itemize}
+
+\section{Przetwarzanie Tekstu i Potoki}
+Jedną z najpotężniejszych cech powłoki jest możliwość łączenia prostych narzędzi w złożone sekwencje za pomocą \textbf{potoków (pipes)}, reprezentowanych przez znak \texttt{|}.
+
+\begin{definitionbox}{Potok (pipe)}
+Potok przekierowuje standardowe wyjście jednego polecenia na standardowe wejście następnego. Działa to jak linia montażowa: każde narzędzie wykonuje swoją pracę, a wynik przekazuje dalej.
+\end{definitionbox}
+
+W skryptach laboratoryjnych używamy potoków do wyodrębnienia kategorii z pliku. Przeanalizujmy tę linię:
+\begin{terminal}
+category=$(grep -i '^CATEGORY:' "$file" | cut -d':' -f2 | tr -d '[:space:]')
+\end{terminal}
+\begin{itemize}
+    \item \texttt{grep -i '\textasciicircum CATEGORY:' "\$file"} \\
+    \textit{Etap 1: Filtrowanie.} Polecenie \texttt{grep} odnajduje w pliku interesującą nas linię.
+    \begin{itemize}
+        \item \texttt{-i}: Ignoruj wielkość liter (\textit{ignore case}).
+        \item \texttt{'\textasciicircum CATEGORY:'}: Wzorzec. Znak \texttt{\textasciicircum} to "kotwica", która oznacza "początek linii". Szukamy więc linii, które \textbf{zaczynają się} od \texttt{CATEGORY:}.
+    \end{itemize}
+    
+    \item \texttt{cut -d':' -f2} \\
+    \textit{Etap 2: Wycinanie.} Wynik z \texttt{grep} (cała linia) jest przekazywany do \texttt{cut}, które wycina z niego tylko potrzebny fragment.
+    \begin{itemize}
+        \item \texttt{-d':'}: Ustawia separator (delimiter) na dwukropek. Dzieli linię na pola względem \texttt{:}.
+        \item \texttt{-f2}: Każe wybrać drugie pole (\textit{field}), czyli wszystko po pierwszym dwukropku.
+    \end{itemize}
+    
+    \item \texttt{tr -d '[:space:]'} \\
+    \textit{Etap 3: Czyszczenie.} Fragment tekstu z \texttt{cut} jest przekazywany do \texttt{tr}, które usuwa z niego niepotrzebne białe znaki.
+    \begin{itemize}
+        \item \texttt{-d}: Usuń znaki (\textit{delete}).
+        \item \texttt{'[:space:]'}: Specjalna klasa znaków oznaczająca wszystkie białe znaki (spacje, tabulatory, itp.).
+    \end{itemize}
+\end{itemize}
+
+\section{Tablice Asocjacyjne}
+Gdy potrzebujemy przechowywać zbiór powiązanych danych (np. mapowanie sum kontrolnych na ścieżki plików), idealnym rozwiązaniem są tablice asocjacyjne.
+
+\begin{definitionbox}{Tablica Asocjacyjna}
+To struktura danych przechowująca pary \textbf{klucz-wartość}, podobnie do słownika w Pythonie. Deklarujemy ją za pomocą \texttt{declare -A nazwa\_mapy}.
+\end{definitionbox}
+
+\begin{importantbox}{Sprawdzanie istnienia klucza}
+Niezawodnym sposobem na sprawdzenie, czy klucz \textbf{istnieje} w tablicy, jest składnia: \texttt{[[ -n "\$\{mapa[\$klucz]+x\}" ]]}
+\end{importantbox}
+
+\begin{definitionbox}{Tablice asocjacyjne w praktyce: śledzenie duplikatów}
+Wyobraźmy sobie, jak skrypt do wyszukiwania duplikatów używa tablicy \texttt{checksum\_map} do śledzenia napotkanych plików:
+\begin{enumerate}
+    \item Skrypt analizuje plik \texttt{raport.txt}. Oblicza jego sumę kontrolną: \texttt{abc...}.
+    \item Sprawdza, czy klucz \texttt{abc...} istnieje w mapie. \textbf{Nie istnieje}.
+    \item Dodaje wpis do mapy: \texttt{checksum\_map[abc...]} = \texttt{"/home/user/raport.txt"}.
+    \item Skrypt analizuje plik \texttt{dane.csv}. Oblicza jego sumę: \texttt{def...}.
+    \item Sprawdza, czy klucz \texttt{def...} istnieje w mapie. \textbf{Nie istnieje}.
+    \item Dodaje wpis: \texttt{checksum\_map[def...]} = \texttt{"/home/user/dane.csv"}.
+    \item Skrypt analizuje plik \texttt{raport\_kopia.txt}, który jest identyczny jak pierwszy.
+    \item Oblicza jego sumę kontrolną: \texttt{abc...}.
+    \item Sprawdza, czy klucz \texttt{abc...} istnieje w mapie. \textbf{Tak, istnieje!}
+    \item Skrypt wie, że plik \texttt{raport\_kopia.txt} jest duplikatem, ponieważ jego "odcisk palca" jest już w kartotece. Raportuje znalezisko.
+\end{enumerate}
+\end{definitionbox}
+
+\section{Przetwarzanie Plików: \texttt{find} i \texttt{while read}}
+
+\subsection{Problem z "trudnymi" nazwami plików}
+Pętla \texttt{for plik in *} zawodzi, gdy nazwy plików zawierają spacje lub inne znaki specjalne.
+
+\subsection{Rozwiązanie: Połączenie \texttt{find} i \texttt{while read}}
+Standardowym i w 100\% niezawodnym sposobem na przetwarzanie listy plików jest połączenie polecenia \texttt{find} z pętlą \texttt{while read}.
+
+\begin{definitionbox}{Wzorzec niezawodnego przetwarzania plików}
+\begin{terminal}
+while IFS= read -r -d '' nazwa_pliku; do
+    # Tutaj bezpiecznie przetwarzamy plik, którego ścieżka jest w "$nazwa_pliku"
+    echo "Przetwarzam: $nazwa_pliku"
+done < <(find /sciezka/startowa -type f -print0)
+\end{terminal}
+\begin{itemize}
+    \item \texttt{find ... -print0}: Generuje strumień ścieżek oddzielonych znakiem \textbf{NULL}.
+    \item \texttt{< <(...)}: \textbf{Podstawienie procesu} przekierowuje ten strumień na wejście pętli \texttt{while}.
+    \item \texttt{IFS= read -r -d ''}: Każe poleceniu \texttt{read} czytać dane aż do napotkania znaku NULL (\texttt{-d ''}), bez interpretowania znaków specjalnych (\texttt{-r}) i bez dzielenia według spacji (\texttt{IFS=}).
+\end{itemize}
+\end{definitionbox}
+
+\section{Sumy Kontrolne}
+W skryptach do wyszukiwania duplikatów kluczową rolę odgrywa mechanizm sum kontrolnych. Pozwala on w sposób jednoznaczny i efektywny sprawdzić, czy dwa pliki są identyczne pod względem zawartości, ignorując ich nazwy czy daty modyfikacji.
+
+\begin{definitionbox}{Suma Kontrolna (Checksum)}
+Suma kontrolna to \textbf{cyfrowy odcisk palca} pliku. Jest to unikalny, krótki ciąg znaków o stałej długości, wygenerowany na podstawie całej zawartości pliku za pomocą algorytmu kryptograficznego.
+\end{definitionbox}
+
+Właściwości sumy kontrolnej są analogiczne do ludzkiego odcisku palca:
+\begin{itemize}
+    \item \textbf{Unikalność:} Dwa różne pliki prawie na pewno będą miały zupełnie inne sumy kontrolne.
+    \item \textbf{Determinizm:} Ten sam plik zawsze wygeneruje dokładnie tę samą sumę kontrolną.
+    \item \textbf{Efekt lawinowy:} Nawet najmniejsza zmiana w pliku (np. zmiana jednej litery) powoduje, że nowa suma kontrolna jest \textbf{całkowicie inna}.
+    \item \textbf{Jednokierunkowość:} Na podstawie samej sumy kontrolnej nie da się odtworzyć oryginalnego pliku.
+\end{itemize}
+
+\begin{definitionbox}{\texttt{sha256sum} – Cyfrowy Skaner Odcisków Palców}
+\texttt{sha256sum} to standardowe polecenie w Linuksie, które implementuje algorytm \textbf{SHA-256} (Secure Hash Algorithm, 256-bit). Jest to "urządzenie", które pobiera cyfrowy odcisk palca. Wynikiem jego działania jest 256-bitowy hash, reprezentowany jako 64 znaki szesnastkowe.
+\end{definitionbox}
+
+\begin{importantbox}{Efekt lawinowy w praktyce}
+Zobacz, jak dramatycznie zmienia się suma kontrolna po dodaniu jednego znaku:
+\begin{terminal}
+# Używamy `echo -n`, aby uniknąć dodania znaku nowej linii na końcu
+$ echo -n "Witaj swiecie" | sha256sum
+2db652244951239987819875e3f3ac7c9615a1334237c1a8397a216439e6a037  -
+
+$ echo -n "Witaj swiecie." | sha256sum
+266228333f28d81084b423f7e5015e58983e20042472d423982e5d52e5b74108  -
+\end{terminal}
+\end{importantbox}
+
+\newpage
+\section{Laboratorium: Analiza i Modyfikacja Skryptów}
+Celem laboratorium jest zrozumienie działania, a następnie samodzielne rozbudowanie trzech skryptów automatyzujących pracę z plikami.
+
+\begin{tcolorbox}[colback=black!5, colframe=titlebg, title=Skrypt 1: Automatyczne Sortowanie Plików, breakable]
+\textbf{Przeznaczenie:} Skrypt automatycznie klasyfikuje pliki z katalogu \texttt{inbox} do podkatalogów w folderze \texttt{classified} na podstawie zawartości każdego pliku.
+\begin{terminal}
+#!/usr/bin/env bash
+INCOMING="inbox"; OUTDIR="classified"
+mkdir -p "$OUTDIR"
+for file in "$INCOMING"/*; do
+    [ -e "$file" ] || continue
+    category=$(grep -i '^CATEGORY:' "$file" | cut -d':' -f2 | tr -d '[:space:]')
+    if [[ -z "$category" ]]; then
+        category="unknown"
+    fi
+    mkdir -p "$OUTDIR/$category"
+    cp "$file" "$OUTDIR/$category"/
+    echo "Copied $(basename "$file") -> $OUTDIR/$category/"
+done
+echo "Classification complete."
+\end{terminal}
+\textbf{Kluczowe koncepcje:} Pętla \texttt{for}, potoki (`|`), polecenia `grep`, `cut`, `tr`, instrukcja warunkowa \texttt{if}.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=black!5, colframe=titlebg, title=Skrypt 2: Wyszukiwanie Duplikatów (Wersja Podstawowa), breakable]
+\textbf{Przeznaczenie:} Skrypt znajduje duplikaty plików w jednym, wskazanym katalogu. Porównuje pliki na podstawie ich zawartości za pomocą sum kontrolnych \texttt{sha256sum}.
+\begin{terminal}
+#!/usr/bin/env bash
+if [[ $# -ne 1 ]]; then echo "Usage: $0 <directory>"; exit 1; fi
+DIR="$1"
+if [[ ! -d "$DIR" ]]; then echo "Error: '$DIR' is not a directory."; exit 1; fi
+declare -A checksum_map
+for file in "$DIR"/*; do
+    [[ -f "$file" ]] || continue
+    checksum=$(sha256sum "$file" | cut -d ' ' -f1)
+    if [[ -n "${checksum_map[$checksum]+x}" ]]; then
+        echo "Duplicate found:"
+        echo "  Original: ${checksum_map[$checksum]}"; echo "  Duplicate: $file"
+    else
+        checksum_map[$checksum]="$file"
+    fi
+done
+\end{terminal}
+\textbf{Kluczowe koncepcje:} Argumenty skryptu, walidacja danych, tablice asocjacyjne, sumy kontrolne.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=black!5, colframe=titlebg, title=Skrypt 3: Wyszukiwanie Duplikatów (Wersja Zaawansowana), breakable]
+\textbf{Przeznaczenie:} Ulepszona wersja poprzedniego skryptu. Jest rekurencyjna i bezpieczna dla nietypowych nazw plików.
+\begin{terminal}
+#!/usr/bin/env bash
+if [[ $# -ne 1 || ! -d "$1" ]]; then echo "Usage: $0 <directory>"; exit 1; fi
+DIR="$1"
+declare -A checksum_map
+while IFS= read -r -d '' file; do
+    checksum=$(sha256sum "$file" | cut -d ' ' -f1)
+    if [[ -n "${checksum_map[$checksum]+x}" ]]; then
+        echo "Duplicate found:"
+        echo "  Original: ${checksum_map[$checksum]}"; echo "  Duplicate: $file"
+    else
+        checksum_map[$checksum]="$file"
+    fi
+done < <(find "$DIR" -type f -print0)
+\end{terminal}
+\textbf{Kluczowe koncepcje:} Niezawodne przetwarzanie plików za pomocą \texttt{find -print0} i pętli \texttt{while read}.
+\end{tcolorbox}
+
+
+\begin{importantbox}{Zadania do wykonania}
+\begin{enumerate}
+    \item \textbf{Modyfikacja Skryptu 1 (Sortowanie):}
+    \begin{itemize}
+        \item Zmień skrypt tak, aby \textbf{przenosił} pliki (\texttt{mv}) zamiast je kopiować (\texttt{cp}).
+        \item Dodaj obsługę drugiego argumentu, który będzie określał katalog docelowy (zamiast na stałe wpisanego \texttt{"classified"}). Jeśli argument nie zostanie podany, skrypt powinien użyć wartości domyślnej.
+    \end{itemize}
+    \item \textbf{Modyfikacja Skryptu 3 (Duplikaty):}
+    \begin{itemize}
+        \item Dodaj do skryptu nową funkcjonalność: po znalezieniu duplikatu, skrypt powinien zapytać użytkownika, czy chce go usunąć. Użyj polecenia \texttt{read -p "Pytanie" zmienna}, aby wczytać odpowiedź. Wewnątrz pętli `while` dodaj instrukcję warunkową, która sprawdzi odpowiedź użytkownika (np. "t" lub "T").
+        \item (Zaawansowane) Rozbuduj skrypt tak, aby raportował nie tylko pierwszy duplikat, ale wszystkie. (Wskazówka: wartość w tablicy asocjacyjnej może być listą plików, a nie pojedynczym plikiem).
+    \end{itemize}
+\end{enumerate}
+\end{importantbox}
+
+\end{document}
