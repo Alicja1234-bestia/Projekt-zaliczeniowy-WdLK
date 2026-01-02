@@ -6,8 +6,65 @@
 \usepackage{geometry}
 \usepackage{setspace}
 
+% --- DODANE (potrzebne do Linux/terminal/minted) ---
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\usepackage{minted} % wymaga kompilacji z -shell-escape
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,breakable}
+
 \geometry{margin=2.5cm}
 \onehalfspacing
+
+% --- (opcjonalnie, ale przydatne) kolor z dokumentu Linux ---
+\definecolor{titlebg}{HTML}{4A90E2}
+
+% --- USTAWIENIA HYPERLINKÓW (żeby \href działał jak w notatkach) ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=titlebg,
+    urlcolor=titlebg,
+    citecolor=titlebg,
+}
+
+% --- STYLE DLA RAMEK TCOLORBOX (z dokumentu Linux) ---
+\newtcolorbox{definitionbox}[1]{
+    colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
+    colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
+    bottomrule=0.5pt, toprule=0.5pt, breakable
+}
+
+\newtcolorbox{importantbox}[1]{
+    colback=yellow!10, colframe=orange!80!black, fonttitle=\bfseries,
+    title=#1, boxrule=1pt, arc=2mm, breakable
+}
+
+% --- ŚRODOWISKO "TERMINAL" (z dokumentu Linux) ---
+\newtcblisting{terminal}{
+    listing only,
+    listing engine=minted,
+    minted language=bash,
+    minted style=vs,
+    minted options={
+        autogobble,
+        breaklines,
+        fontsize=\footnotesize
+    },
+    colback=black!70,
+    colframe=black!50,
+    breakable,
+    arc=3mm,
+    boxrule=1pt,
+    left=5mm, top=3mm, bottom=3mm,
+    title={\hspace{-3mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=red!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=yellow!80!black, arc=3mm]{} \hspace{1mm}
+        \tcbox[on line, size=small, boxrule=0pt, colback=green!70!black, arc=3mm]{}
+        \hspace{4mm} \bfseries\small Terminal -- Bash
+    },
+}
 
 \title{Materiały do laboratoriów}
 \author{ }
