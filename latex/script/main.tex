@@ -1,28 +1,30 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[a4paper, 12pt]{article}
 
-\usepackage[polish]{babel}
+% --- PAKIETY ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
 \usepackage{geometry}
-\usepackage{setspace}
-
-% --- DODANE (potrzebne do Linux/terminal/minted) ---
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{graphicx}
-\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{beramono}
+\usepackage{tabularx} % Do lepszych tabel
+\usepackage{fvextra}
 
-\usepackage{minted} % wymaga kompilacji z -shell-escape
+
+% --- PAKIETY DO OKIENEK TERMINALA I KODU ---
+\usepackage{minted} % Do kolorowania składni (wymaga -shell-escape)
 \usepackage[most]{tcolorbox}
-\tcbuselibrary{minted,breakable}
+\tcbuselibrary{minted,breakable} % Załadowanie bibliotek tcolorbox
 
-\geometry{margin=2.5cm}
-\onehalfspacing
-
-% --- (opcjonalnie, ale przydatne) kolor z dokumentu Linux ---
+% --- USTAWIENIA STRONY ---
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
 \definecolor{titlebg}{HTML}{4A90E2}
+\definecolor{terminalbg}{HTML}{2D2D2D} % Ciemnoszary dla tła terminala
 
-% --- USTAWIENIA HYPERLINKÓW (żeby \href działał jak w notatkach) ---
+% --- USTAWIENIA HYPERLINKÓW ---
 \hypersetup{
     colorlinks=true,
     linkcolor=titlebg,
@@ -30,7 +32,15 @@
     citecolor=titlebg,
 }
 
-% --- STYLE DLA RAMEK TCOLORBOX (z dokumentu Linux) ---
+% --- NAGŁÓWEK I STOPKA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Wprowadzenie do pracy w systemie Linux}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- STYLE DLA RAMEK TCOLORBOX ---
 \newtcolorbox{definitionbox}[1]{
     colback=black!5, colframe=titlebg, fonttitle=\bfseries, coltitle=white,
     colbacktitle=titlebg, title=#1, boxrule=1pt, arc=4mm,
@@ -42,18 +52,18 @@
     title=#1, boxrule=1pt, arc=2mm, breakable
 }
 
-% --- ŚRODOWISKO "TERMINAL" (z dokumentu Linux) ---
+% --- ŚRODOWISKO "TERMINAL" ---
 \newtcblisting{terminal}{
-    listing only,
+    listing only, 
     listing engine=minted,
     minted language=bash,
-    minted style=vs,
+    minted style=vs, % Popularny ciemny motyw
     minted options={
-        autogobble,
-        breaklines,
+        autogobble, 
+        breaklines, 
         fontsize=\footnotesize
     },
-    colback=black!70,
+    colback=black!70, % Ciemne tło terminala
     colframe=black!50,
     breakable,
     arc=3mm,
@@ -66,6 +76,9 @@
         \hspace{4mm} \bfseries\small Terminal -- Bash
     },
 }
+
+
+% --- STRONA TYTUŁOWA ---
 
 \title{Materiały do laboratoriów}
 \author{ }
