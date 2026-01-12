@@ -21,7 +21,7 @@ Katalog zawiera skrypty Bash realizujące zadania automatyzacyjne.
 - `classification/`  
   Skrypt do automatycznego sortowania plików:
   - `inbox/` – katalog wejściowy
-  - `classified/` – katalog docelowy (domyślny)
+  - `classified/` – katalog docelowy 
 
 - `duplicates/`  
   Skrypt do wyszukiwania i interaktywnego usuwania zduplikowanych plików:
