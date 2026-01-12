@@ -1,4 +1,4 @@
-# Projekt Zaliczeniowy – Wprowadzenie do Linuxa
+# Projekt Zaliczeniowy – WdLK
 
 ## 🎯 Cel repozytorium
 
