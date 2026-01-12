@@ -36,7 +36,7 @@ Katalog zawiera dokumenty przygotowane w LaTeXu.
   Połączony skrypt dla studentów:
   - `parts/` – pliki źródłowe `.tex`
   - `main.tex` – plik główny
-  - `script_wdlk.pdf` – skompilowany dokument
+  - `script_WDLK(2).pdf` – skompilowany dokument
 
 - `instruction/`  
   Instrukcja techniczna w formacie PDF:
