@@ -24,7 +24,7 @@ Katalog zawiera skrypty Bash realizujące zadania automatyzacyjne.
   - `classified/` – katalog docelowy 
 
 - `duplicates/`  
-  Skrypt do wyszukiwania i interaktywnego usuwania zduplikowanych plików:
+  Skrypt do wyszukiwania i usuwania zduplikowanych plików:
   - `files/` – katalog z plikami do analizy
 
 ---
